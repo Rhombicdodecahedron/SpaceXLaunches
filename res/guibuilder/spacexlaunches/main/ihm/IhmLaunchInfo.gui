@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<component type="Form" layout="LayeredLayout" layeredLayoutPreferredWidthMM="0.0" layeredLayoutPreferredHeightMM="0.0"  autolayout="true" title="" scrollableY="false" name="IhmLaunchInfo">
+<command varName="Back" hasCode="true" name="Back" id="0" placement="Left" icon="fontImage:e5c4"/>  <component type="Label" text="Launch Name" styles="font:6.0mm;" name="txt_launch_name">
+    <layoutConstraint insets="6.859593% auto auto auto" referenceComponents="-1 -1 -1 -1" referencePositions="0.0 0.0 0.0 0.0" />
+  </component>
+  <component type="Label" text="Label" styles="font:7.0mm;" name="txt_img">
+    <layoutConstraint insets="14.737406% auto auto auto" referenceComponents="-1 -1 -1 -1" referencePositions="0.0 0.0 0.0 0.0" />
+  </component>
+  <component type="Container" layout="LayeredLayout" layeredLayoutPreferredWidthMM="76.70166" layeredLayoutPreferredHeightMM="79.41077"  preferredSize="76.70166mm 79.41077mm" scrollableY="false" name="Container">
+    <layoutConstraint insets="29.577465% 0.0mm 26.478872% 0.0mm" referenceComponents="-1 -1 -1 -1" referencePositions="0.0 0.0 0.0 0.0" />
+  </component>
+  <component type="TextArea" text="TextArea" preferredSize="74.66982mm 28.953606mm" columns="8" name="txt_area">
+    <layoutConstraint insets="0.0mm 0.0mm 33.451958% auto" referenceComponents="2 -1 -1 -1" referencePositions="1.0 0.0 0.0 0.0" />
+  </component>
+</component>

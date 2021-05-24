@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<component type="Form" layout="LayeredLayout" layeredLayoutPreferredWidthMM="0.0" layeredLayoutPreferredHeightMM="0.0"  autolayout="true" title="" scrollableY="false" name="IhmRegister">
+<command varName="Back" hasCode="true" name="Back" id="0" placement="Left" icon="fontImage:e5c4"/>  <component type="TextField" styles="alignment:left;" preferredSize="33.862434mm 9.523809mm" hint="Firstname" constraint="0" name="txt_firstname">
+    <layoutConstraint insets="20.0mm 59.740265% auto 5.56mm" referenceComponents="-1 -1 -1 -1" referencePositions="0.0 0.0 0.0 0.0" />
+  </component>
+  <component type="TextField" preferredSize="33.862434mm 9.523809mm" hint="Lastname" name="txt_lastname">
+    <layoutConstraint insets="20.0mm 5.56mm auto 58.18182%" referenceComponents="-1 -1 -1 -1" referencePositions="0.0 0.0 0.0 0.0" />
+  </component>
+  <component type="TextField" preferredSize="89.41799mm 10.31746mm" hint="Email" constraint="1" name="txt_email">
+    <layoutConstraint insets="4.000004% 5.56mm auto 5.5555563mm" referenceComponents="0 -1 -1 -1" referencePositions="1.0 0.0 0.0 0.0" />
+  </component>
+  <component type="TextField" preferredSize="117.46032mm 10.31746mm" hint="Password" constraint="65536" name="txt_password">
+    <layoutConstraint insets="4.622568% 5.56mm auto 5.56mm" referenceComponents="2 -1 -1 -1" referencePositions="1.0 0.0 0.0 0.0" />
+  </component>
+  <component type="Button" text="Register" styles="font:6.0mm; bgColor:ffffff; transparency:21;" preferredSize="76.455025mm 9.78836mm" name="btm_register" actionEvent="true">
+    <layoutConstraint insets="4.4866962mm 8.99471mm auto 8.99471mm" referenceComponents="3 -1 -1 -1" referencePositions="1.0 0.0 0.0 0.0" />
+  </component>
+</component>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<component type="Form" layout="LayeredLayout" layeredLayoutPreferredWidthMM="0.0" layeredLayoutPreferredHeightMM="0.0"  autolayout="true" styles="bgImage:SpaceXAppWallpaper.jpg;" title="" scrollableY="false" name="IhmHome">
+<command varName="Info" hasCode="true" name="" id="0" placement="Left"/>  <component type="Container" layout="LayeredLayout" layeredLayoutPreferredWidthMM="132.27513" layeredLayoutPreferredHeightMM="221.42857"  styles="bgImage:null;" preferredSize="132.27513mm inherit" name="Container">
+    <layoutConstraint insets="0.26455027mm -0.26455027mm -0.26455027mm 0.26455027mm" referenceComponents="-1 -1 -1 -1" referencePositions="0.0 0.0 0.0 0.0" />
+    <component type="Label" text="Launches" styles="font:10.0mm; fgColor:fbf9f9; bgImage:null;" name="Label">
+      <layoutConstraint insets="35.603344% auto auto auto" referenceComponents="-1 -1 -1 -1" referencePositions="0.0 0.0 0.0 0.0" />
+    </component>
+    <component type="Button" text="Log In" styles="font:6.0mm; fgColor:eb8f0e;" preferredSize="20.899471mm inherit" name="btn_load_login" actionEvent="true">
+      <layoutConstraint insets="19.709543% auto auto 12.060302%" referenceComponents="0 -1 -1 -1" referencePositions="1.0 0.0 0.0 0.0" />
+    </component>
+    <component type="Button" text="Register" styles="font:6.0mm; fgColor:eb8f0e;" preferredSize="28.042328mm inherit" name="btn_load_register" actionEvent="true">
+      <layoutConstraint insets="19.709543% 8.040201% auto auto" referenceComponents="0 -1 -1 -1" referencePositions="1.0 0.0 0.0 0.0" />
+    </component>
+    <component type="Label" styles="bgImage:SpaceX-Logo.png;" preferredSize="85.50626mm 51.981033mm" name="Label_1">
+      <layoutConstraint insets="44.70588% 5.3596616% 9.558824% 22.849083%" referenceComponents="-1 -1 0 -1" referencePositions="0.0 0.0 0.0 0.0" />
+    </component>
+  </component>
+</component>

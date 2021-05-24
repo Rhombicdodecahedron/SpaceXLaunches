@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<component type="Form" layout="LayeredLayout" layeredLayoutPreferredWidthMM="0.0" layeredLayoutPreferredHeightMM="0.0"  autolayout="true" title="Log In" scrollableY="false" name="IhmLogin">
+<command varName="Back" hasCode="true" name="Back" id="0" placement="Left" icon="fontImage:e5c4"/>  <component type="TextField" preferredSize="89.41799mm 10.31746mm" hint="Email" constraint="1" name="txt_email">
+    <layoutConstraint insets="20.644402% 5.56mm auto 5.5555563mm" referenceComponents="-1 -1 -1 -1" referencePositions="0.0 0.0 0.0 0.0" />
+  </component>
+  <component type="TextField" preferredSize="117.46032mm 10.31746mm" hint="Password" constraint="65536" name="txt_password">
+    <layoutConstraint insets="4.622568% 5.56mm auto 5.56mm" referenceComponents="0 -1 -1 -1" referencePositions="1.0 0.0 0.0 0.0" />
+  </component>
+  <component type="Button" text="Log In" styles="font:6.0mm; bgColor:ffffff; transparency:21;" preferredSize="76.455025mm 9.78836mm" name="btm_login" actionEvent="true">
+    <layoutConstraint insets="6.349207mm 8.99471mm auto 8.99471mm" referenceComponents="1 -1 -1 -1" referencePositions="1.0 0.0 0.0 0.0" />
+  </component>
+</component>
