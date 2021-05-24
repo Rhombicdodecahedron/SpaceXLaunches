@@ -106,7 +106,7 @@ public class Ihm {
     }
 
     public void showError(String message) {
-
+        Dialog.show("Error", message, "OK", null);
     }
 
     public void showLaunchInfo(Launch launch) {

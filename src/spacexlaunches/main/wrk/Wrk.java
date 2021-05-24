@@ -10,15 +10,13 @@ import java.util.Map;
 public class Wrk {
 
     private Ctrl refCtrl;
+
     private final WrkREST wrkREST;
 
     public Wrk() {
         wrkREST = new WrkREST();
     }
 
-    public void setRefCtrl(Ctrl refCtrl) {
-        this.refCtrl = refCtrl;
-    }
 
     public ArrayList<Launch> getAllLaunches() throws Exception {
         return wrkREST.getAllLaunches();
@@ -36,7 +34,7 @@ public class Wrk {
         return wrkREST.getSession();
     }
 
-    public boolean disconnect() {
+    public boolean disconnect() throws Exception {
         return wrkREST.disconnect();
     }
 
@@ -47,4 +45,10 @@ public class Wrk {
     public Launch getNextLaunch() throws Exception {
         return wrkREST.getNextLaunch();
     }
+
+
+    public void setRefCtrl(Ctrl refCtrl) {
+        this.refCtrl = refCtrl;
+    }
+
 }

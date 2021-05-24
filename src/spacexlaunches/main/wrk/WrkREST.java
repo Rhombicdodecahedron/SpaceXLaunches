@@ -24,7 +24,6 @@ public class WrkREST implements Constantes {
 
 
     public Map<String, Object> postUserLogin(String email, String password) throws Exception {
-
         Map<String, Object> result = null;
         if (email != null && password != null) {
             result = responseToMap(Rest.post(REST_SERVER_URL).queryParam("action", "POST_USER_LOGIN").queryParam("email", email).queryParam("password", password).getAsBytes());
@@ -34,7 +33,7 @@ public class WrkREST implements Constantes {
 
     public Map<String, Object> postUserRegister(String firstname, String lastname, String email, String password) throws Exception {
         Map<String, Object> result = null;
-        if (email != null && password != null) {
+        if (firstname != null && lastname != null && email != null && password != null) {
             result = responseToMap(Rest.post(REST_SERVER_URL)
                     .queryParam("action", "POST_USER_REGISTER")
                     .queryParam("firstname", firstname)
@@ -53,15 +52,11 @@ public class WrkREST implements Constantes {
     }
 
 
-    public boolean disconnect() {
-        boolean result = false;
-        try {
-            Map<String, Object> response = responseToMap(Rest.get(REST_SERVER_URL).queryParam("action", "GET_USER_LOGOUT").acceptJson().getAsBytes());
-            result = !Boolean.parseBoolean(response.get("error").toString());
-        } catch (Exception e) {
+    public boolean disconnect() throws Exception {
 
-        }
-        return result;
+        //FAIRE RETOURNER LA MAP DE STRING D'OBJECT ET ENSUITE DANS LE CONTROLLEUR VERIFIER SI C'EST OK SINON AFFICHER LE MESSAGE D'ERREUR.
+        Map<String, Object> response = responseToMap(Rest.get(REST_SERVER_URL).queryParam("action", "GET_USER_LOGOUT").acceptJson().getAsBytes());
+        return !Boolean.parseBoolean(response.get("error").toString());
     }
 
     public User getSession() throws Exception {
@@ -80,7 +75,6 @@ public class WrkREST implements Constantes {
             Date timestamp = new SimpleDateFormat("yyyy-MM-dd").parse(user.get("timestamp").toString());
             result = new User(pk, firstname, lastname, email, timestamp);
         }
-
         return result;
     }
 
@@ -88,60 +82,32 @@ public class WrkREST implements Constantes {
     public Launch getNextLaunch() throws Exception {
         Launch result = null;
         Map<String, Object> response = responseToMap(Rest.get(SPACEX_API_URL + "launches/next").acceptJson().getAsBytes());
-
         if (!response.isEmpty()) {
-            Map<String, Object> links = (Map<String, Object>) response.get("links");
-            Map<String, Object> patch = (Map<String, Object>) links.get("patch");
-
-            String img = (String) patch.get("small");
-            String id = (String) response.get("id");
-            String name = (String) response.get("name");
-            int flightNumber = (int) Double.parseDouble(response.get("flight_number").toString());
-            Rocket rocket = getRocket(response.get("rocket").toString());
-            Date launchDate = new SimpleDateFormat(API_FORMAT_DATE).parse(response.get("date_utc").toString());
-            boolean success = /*(boolean) res.get("success")*/false;
-            LaunchPad launchPad = getLaunchPad(response.get("launchpad").toString());
-            String details = (String) response.get("details");
-
-            result = new Launch(img, id, name, flightNumber, rocket, launchDate, success, launchPad, details);
+            Launch launch = createLaunchObject(response);
+            if (launch != null) {
+                result = launch;
+            }
         }
         return result;
     }
 
 
     public ArrayList<Launch> getAllLaunches() throws Exception {
-
-
         ArrayList<Launch> result = new ArrayList<>();
-
         Map<String, Object> out = responseToMap(Rest.get(SPACEX_API_URL + "launches/past").acceptJson().getAsBytes());
-
-        rockets = getAllRockets();
-        launchPads = getAllLaunchPads();
-
-        if (!out.isEmpty() && !rockets.isEmpty() && !launchPads.isEmpty()) {
-
+        if (rockets == null && launchPads == null) {
+            rockets = getAllRockets();
+            launchPads = getAllLaunchPads();
+        }
+        if (!out.isEmpty()) {
             List<Map<String, Object>> responses = (List<Map<String, Object>>) out.get("root");
-
             for (Map<String, Object> response : responses) {
-
-                Map<String, Object> links = (Map<String, Object>) response.get("links");
-                Map<String, Object> patch = (Map<String, Object>) links.get("patch");
-
-                String img = (String) patch.get("small");
-                String id = (String) response.get("id");
-                String name = (String) response.get("name");
-                int flightNumber = (int) Double.parseDouble(response.get("flight_number").toString());
-                Rocket rocket = getRocket(response.get("rocket").toString());
-                Date launchDate = new SimpleDateFormat(API_FORMAT_DATE).parse(response.get("date_utc").toString());
-                boolean success = /*(boolean) res.get("success")*/false;
-                LaunchPad launchPad = getLaunchPad(response.get("launchpad").toString());
-                String details = (String) response.get("details");
-
-                result.add(new Launch(img, id, name, flightNumber, rocket, launchDate, success, launchPad, details));
+                Launch launch = createLaunchObject(response);
+                if (launch != null) {
+                    result.add(launch);
+                }
             }
         }
-
         return result;
     }
 
@@ -149,7 +115,7 @@ public class WrkREST implements Constantes {
     public ArrayList<Rocket> getAllRockets() throws Exception {
         ArrayList<Rocket> result = new ArrayList<>();
         Map<String, Object> rockets = responseToMap(Rest.get(SPACEX_API_URL + "rockets").acceptJson().getAsBytes());
-        if (rockets != null && !rockets.isEmpty()) {
+        if (!rockets.isEmpty()) {
             List<Map<String, Object>> responses = (List<Map<String, Object>>) rockets.get("root");
             if (responses != null && !responses.isEmpty()) {
                 for (Map<String, Object> response : responses) {
@@ -162,7 +128,6 @@ public class WrkREST implements Constantes {
                 }
             }
         }
-
         return result;
     }
 
@@ -170,7 +135,7 @@ public class WrkREST implements Constantes {
     public ArrayList<LaunchPad> getAllLaunchPads() throws Exception {
         ArrayList<LaunchPad> result = new ArrayList<>();
         Map<String, Object> launchPads = responseToMap(Rest.get(SPACEX_API_URL + "launchpads").acceptJson().getAsBytes());
-        if (launchPads != null && !launchPads.isEmpty()) {
+        if (!launchPads.isEmpty()) {
             List<Map<String, Object>> responses = (List<Map<String, Object>>) launchPads.get("root");
             if (responses != null && !responses.isEmpty()) {
                 for (Map<String, Object> response : responses) {
@@ -191,7 +156,7 @@ public class WrkREST implements Constantes {
 
     public Rocket getRocket(String id) {
         Rocket result = null;
-        if (id != null && !id.isEmpty()) {
+        if (id != null) {
             if (rockets != null && !rockets.isEmpty()) {
                 for (Rocket rocket : rockets) {
                     if (rocket != null) {
@@ -207,7 +172,7 @@ public class WrkREST implements Constantes {
 
     public LaunchPad getLaunchPad(String id) {
         LaunchPad result = null;
-        if (id != null && !id.isEmpty()) {
+        if (id != null) {
             if (launchPads != null && !launchPads.isEmpty()) {
                 for (LaunchPad launchPad : launchPads) {
                     if (launchPad != null) {
@@ -218,10 +183,31 @@ public class WrkREST implements Constantes {
                 }
             }
         }
-
         return result;
     }
 
+
+    private Launch createLaunchObject(Map<String, Object> response) throws Exception {
+        Launch result = null;
+        if (response != null) {
+            Map<String, Object> links = (Map<String, Object>) response.get("links");
+            Map<String, Object> patch = (Map<String, Object>) links.get("patch");
+            String img = (String) patch.get("small");
+            String id = (String) response.get("id");
+            String name = (String) response.get("name");
+            int flightNumber = (int) Double.parseDouble(response.get("flight_number").toString());
+            Rocket rocket = getRocket(response.get("rocket").toString());
+            Date launchDate = new SimpleDateFormat(API_FORMAT_DATE).parse(response.get("date_utc").toString());
+            boolean success = false;
+            if (response.get("success") != null) {
+                success = Boolean.parseBoolean(response.get("success").toString());
+            }
+            LaunchPad launchPad = getLaunchPad(response.get("launchpad").toString());
+            String details = (String) response.get("details");
+            result = new Launch(img, id, name, flightNumber, rocket, launchDate, success, launchPad, details);
+        }
+        return result;
+    }
 
     private Map<String, Object> responseToMap(Response<byte[]> response) throws Exception {
         Map<String, Object> result = new HashMap<>();

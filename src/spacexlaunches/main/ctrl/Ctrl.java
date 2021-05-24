@@ -46,7 +46,7 @@ public class Ctrl {
             }
             Log.sendLogAsync();
 
-            refIhm.infoPopUp("Connection Error", "There was a networking error in the connection to " + err.getConnectionRequest().getUrl(), "OK", null);
+            refIhm.showError("There was a networking error in the connection to " + err.getConnectionRequest().getUrl());
         });
     }
 
@@ -61,10 +61,10 @@ public class Ctrl {
                     //  refIhm.infoPopUp("Success", message, "OK", null);
                     afficheLogged();
                 } else {
-                    refIhm.infoPopUp("Error", message, "OK", null);
+                    refIhm.showError(message);
                 }
             } catch (Exception e) {
-                refIhm.infoPopUp("Error", e.getMessage(), "OK", null);
+                refIhm.showError(e.getMessage());
             }
         } else {
 
@@ -83,10 +83,10 @@ public class Ctrl {
                     //  refIhm.infoPopUp("Success", message, "OK", null);
                     afficheLogged();
                 } else {
-                    refIhm.infoPopUp("Error", message, "OK", null);
+                    refIhm.showError(message);
                 }
             } catch (Exception e) {
-                refIhm.infoPopUp("Error", e.getMessage(), "OK", null);
+                refIhm.showError(e.getMessage());
             }
 
         }
@@ -153,18 +153,24 @@ public class Ctrl {
                 afficheHome();
             }
         } catch (Exception e) {
-            refIhm.infoPopUp("Error", e.getMessage(), "OK", null);
+            refIhm.showError(e.getMessage());
         }
 
     }
 
 
-    public Launch getNextLaunches() throws Exception{
+    public Launch getNextLaunches() throws Exception {
         return refWrk.getNextLaunch();
     }
 
     public void disconnect() {
         //faire une popup qui pose une question de si nous voulons vraiment nous déconnecter
-        boolean ok = refWrk.disconnect();
+        try {
+            if (!refWrk.disconnect()) {
+                refIhm.infoPopUp("Info", "Vous avez correctement été déconecté !", "OK", null);
+            }
+        } catch (Exception e) {
+            refIhm.showError(e.getMessage());
+        }
     }
 }
