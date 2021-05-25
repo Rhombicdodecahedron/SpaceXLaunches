@@ -1,17 +1,21 @@
 package spacexlaunches.main.ihm;
 
+import com.codename1.ui.Form;
+import com.codename1.ui.Toolbar;
 import spacexlaunches.main.beans.Launch;
 import spacexlaunches.main.ctrl.Ctrl;
 import com.codename1.components.InfiniteProgress;
 import com.codename1.ui.Dialog;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
+import spacexlaunches.main.enumeration.Sort;
 
 import java.util.ArrayList;
 
 public class Ihm {
 
     private Ctrl refCtrl;
+    private Form current;
 
     private final IhmRegister ihmRegister;
     private final IhmHome ihmHome;
@@ -41,7 +45,8 @@ public class Ihm {
         ihmLaunchInfo = new IhmLaunchInfo(theme);
         ihmLaunchInfo.setRefIhm(this);
 
-
+        // Enable Toolbar on all Forms by default
+        Toolbar.setGlobalToolbar(false);
     }
 
     public void afficheLogin() {
@@ -93,6 +98,10 @@ public class Ihm {
         infiniteProgress.dispose();
     }
 
+    public ArrayList<Launch> getAllLaunches(Sort sort) throws Exception {
+        return refCtrl.getAllLaunches(sort);
+    }
+
     public ArrayList<Launch> getAllLaunches() throws Exception {
         return refCtrl.getAllLaunches();
     }
@@ -116,5 +125,15 @@ public class Ihm {
 
     public void goBackLoggedView() {
         ihmLogged.showBack();
+    }
+
+    public boolean askPopUp(String message) {
+        return Dialog.show("Confirmation", message, "Yes", "No");
+    }
+
+
+    public void showCurrentView() {
+
+
     }
 }

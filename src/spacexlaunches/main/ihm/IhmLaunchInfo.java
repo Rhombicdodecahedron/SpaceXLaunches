@@ -30,44 +30,49 @@ public class IhmLaunchInfo extends com.codename1.ui.Form {
 
     public void showInfos(Launch launch) {
         if (launch != null) {
-            FontImage p = FontImage.createMaterial(FontImage.MATERIAL_DISABLED_BY_DEFAULT, "Label", 15);
-            EncodedImage placeholder = EncodedImage.createFromImage(p.scaled(p.getWidth(), p.getHeight()), true);
-            gui_txt_launch_name.setText(launch.getName());
-            gui_txt_img.setIcon(p);
-            if (launch.getImg() != null) {
-                gui_txt_img.setIcon(URLImage.createToStorage(placeholder, launch.getId(), launch.getImg()));
-            }
-            gui_txt_img.setText("");
-            gui_Container.removeAll();
-            TableModel model = new DefaultTableModel(new String[]{"", ""}, new Object[][]{
-                    {"Flight Number", launch.getFlightNumber()},
-                    {"Launch Date", launch.getLaunchDate()},
-                    {"Rocket Name", launch.getRocket().getName()},
-                    {"Rocket Type", launch.getRocket().getType()},
-                    {"Launchpad Name", launch.getLaunchPad().getName()},
-                    {"Location", launch.getLaunchPad().getLocality()},
-                    {"Success", launch.isSuccess()},
-            }) {
-                public boolean isCellEditable(int row, int col) {
-                    return col != 0;
+            try {
+                FontImage p = FontImage.createMaterial(FontImage.MATERIAL_DISABLED_BY_DEFAULT, "Label", 15);
+                EncodedImage placeholder = EncodedImage.createFromImage(p.scaled(p.getWidth(), p.getHeight()), true);
+                gui_txt_launch_name.setText(launch.getName());
+                gui_txt_img.setIcon(p);
+                if (launch.getImg() != null) {
+                    gui_txt_img.setIcon(URLImage.createToStorage(placeholder, launch.getId(), launch.getImg()));
                 }
-            };
-            Table table = new Table(model) {
-                @Override
-                protected TableLayout.Constraint createCellConstraint(Object value, int row, int column) {
-                    TableLayout.Constraint con = super.createCellConstraint(value, row, column);
-                    if (row == 1 && column == 1) {
-                        con.setHorizontalSpan(2);
+                gui_txt_img.setText("");
+                gui_Container.removeAll();
+                TableModel model = new DefaultTableModel(new String[]{"", ""}, new Object[][]{
+                        {"Flight Number", launch.getFlightNumber()},
+                        {"Launch Date", launch.getLaunchDate()},
+                        {"Rocket Name", launch.getRocket().getName()},
+                        {"Rocket Type", launch.getRocket().getType()},
+                        {"Launchpad Name", launch.getLaunchPad().getName()},
+                        {"Location", launch.getLaunchPad().getLocality()},
+                        {"Success", launch.isSuccess()},
+                }) {
+                    public boolean isCellEditable(int row, int col) {
+                        return col != 0;
                     }
-                    con.setWidthPercentage(50);
-                    return con;
-                }
-            };
-            table.setEnabled(false);
-            gui_txt_area.setText(launch.getDetails());
-            gui_txt_area.setEditable(false);
+                };
+                Table table = new Table(model) {
+                    @Override
+                    protected TableLayout.Constraint createCellConstraint(Object value, int row, int column) {
+                        TableLayout.Constraint con = super.createCellConstraint(value, row, column);
+                        if (row == 1 && column == 1) {
+                            con.setHorizontalSpan(2);
+                        }
+                        con.setWidthPercentage(50);
+                        return con;
+                    }
+                };
+                table.setEnabled(false);
+                gui_txt_area.setText(launch.getDetails());
+                gui_txt_area.setEditable(false);
 
-            gui_Container.add(BorderLayout.CENTER, table);
+                gui_Container.add(BorderLayout.CENTER, table);
+            } catch (IllegalArgumentException e) {
+                refIhm.showError(e.getMessage());
+            }
+
         }
 
     }

@@ -3,6 +3,7 @@ package spacexlaunches.main.wrk;
 import spacexlaunches.main.beans.Launch;
 import spacexlaunches.main.beans.User;
 import spacexlaunches.main.ctrl.Ctrl;
+import spacexlaunches.main.enumeration.Sort;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -20,6 +21,10 @@ public class Wrk {
 
     public ArrayList<Launch> getAllLaunches() throws Exception {
         return wrkREST.getAllLaunches();
+    }
+
+    public ArrayList<Launch> getAllLaunches(Sort sort) throws Exception {
+        return wrkREST.getAllLaunches(sort);
     }
 
     public Map<String, Object> postUserLogin(String email, String password) throws Exception {

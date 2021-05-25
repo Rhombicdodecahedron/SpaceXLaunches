@@ -1,18 +1,15 @@
 package spacexlaunches.main.ctrl;
 
 import spacexlaunches.main.beans.Launch;
-import spacexlaunches.main.beans.User;
+import spacexlaunches.main.enumeration.Sort;
 import spacexlaunches.main.ihm.Ihm;
 import spacexlaunches.main.wrk.Wrk;
 import com.codename1.io.Log;
-import com.codename1.ui.Toolbar;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
-import static com.codename1.ui.CN.addNetworkErrorListener;
-import static com.codename1.ui.CN.updateNetworkThreadCount;
+import static com.codename1.ui.CN.*;
 
 public class Ctrl {
 
@@ -21,6 +18,7 @@ public class Ctrl {
     private Wrk refWrk;
 
     public Ctrl() {
+
     }
 
 
@@ -31,9 +29,6 @@ public class Ctrl {
     public void start() {
         // use two network threads instead of one
         updateNetworkThreadCount(2);
-
-        // Enable Toolbar on all Forms by default
-        Toolbar.setGlobalToolbar(false);
 
         // Pro only feature
         Log.bindCrashProtection(true);
@@ -48,17 +43,18 @@ public class Ctrl {
 
             refIhm.showError("There was a networking error in the connection to " + err.getConnectionRequest().getUrl());
         });
+
+        refIhm.showCurrentView();
+
     }
 
     public void checkLogin(String email, String password) {
         if (email != null && !email.isEmpty() && password != null && !password.isEmpty()) {
             try {
                 Map<String, Object> response = refWrk.postUserLogin(email, password);
-
                 boolean isError = Boolean.parseBoolean(response.get("error").toString());
                 String message = response.get("message").toString();
                 if (!isError) {
-                    //  refIhm.infoPopUp("Success", message, "OK", null);
                     afficheLogged();
                 } else {
                     refIhm.showError(message);
@@ -67,7 +63,7 @@ public class Ctrl {
                 refIhm.showError(e.getMessage());
             }
         } else {
-
+            refIhm.showError("You need to complete all fields of the form !");
         }
     }
 
@@ -75,12 +71,9 @@ public class Ctrl {
         if (email != null && !email.isEmpty() && firstname != null && !firstname.isEmpty() && lastname != null && !lastname.isEmpty() && password != null && !password.isEmpty()) {
             try {
                 Map<String, Object> response = refWrk.postUserRegister(firstname, lastname, email, password);
-
                 boolean isError = Boolean.parseBoolean(response.get("error").toString());
-
                 String message = response.get("message").toString();
                 if (!isError) {
-                    //  refIhm.infoPopUp("Success", message, "OK", null);
                     afficheLogged();
                 } else {
                     refIhm.showError(message);
@@ -88,53 +81,17 @@ public class Ctrl {
             } catch (Exception e) {
                 refIhm.showError(e.getMessage());
             }
-
+        } else {
+            refIhm.showError("You need to complete all fields of the form !");
         }
     }
 
-
-    public void connectDatabase(String jpa_pu) {
-        if (jpa_pu != null && !jpa_pu.isEmpty()) {
-            try {
-                // boolean ok = refWrk.connectDatabase(jpa_pu);
-                //    if (ok) {
-                //ok
-                //     } else {
-                //error
-                //   }
-
-            } catch (Exception e) {
-                //e.printStackTrace();
-            }
-
-        }
+    public ArrayList<Launch> getAllLaunches(Sort sort) throws Exception {
+        return refWrk.getAllLaunches(sort);
     }
-
-
     public ArrayList<Launch> getAllLaunches() throws Exception {
-        // ArrayList<Launch> result = null;
-        //  try {
-        //refIhm.showLoadingScreen();
-        // refIhm.showAllLaunches();
-        // refIhm.hideLoadingScreen();
-        //    result = ;
-        // } catch (Exception e) {
-        //    refIhm.infoPopUp("Error", e.getMessage(), "OK", null);
-        //  }
         return refWrk.getAllLaunches();
     }
-
-
-    //SETTER
-
-    public void setRefIhm(Ihm refIhm) {
-        this.refIhm = refIhm;
-    }
-
-    public void setRefWrk(Wrk refWrk) {
-        this.refWrk = refWrk;
-    }
-
     public void afficheHome() {
         refIhm.afficheHome();
     }
@@ -155,7 +112,6 @@ public class Ctrl {
         } catch (Exception e) {
             refIhm.showError(e.getMessage());
         }
-
     }
 
 
@@ -165,12 +121,34 @@ public class Ctrl {
 
     public void disconnect() {
         //faire une popup qui pose une question de si nous voulons vraiment nous déconnecter
-        try {
-            if (!refWrk.disconnect()) {
-                refIhm.infoPopUp("Info", "Vous avez correctement été déconecté !", "OK", null);
+        if (refIhm.askPopUp("Yep")) {
+            try {
+                if (!refWrk.disconnect()) {
+                    refIhm.infoPopUp("Info", "Vous avez correctement été déconecté !", "OK", null);
+                }
+            } catch (Exception e) {
+                refIhm.showError(e.getMessage());
             }
-        } catch (Exception e) {
-            refIhm.showError(e.getMessage());
         }
     }
+
+    public void stop() {
+        /*
+        current = getCurrentForm();
+        if (current instanceof Dialog) {
+            ((Dialog) current).dispose();
+            current = getCurrentForm();
+        }*/
+    }
+
+
+    //SETTER
+    public void setRefIhm(Ihm refIhm) {
+        this.refIhm = refIhm;
+    }
+
+    public void setRefWrk(Wrk refWrk) {
+        this.refWrk = refWrk;
+    }
+
 }

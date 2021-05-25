@@ -5,6 +5,7 @@ import spacexlaunches.main.beans.*;
 import com.codename1.io.JSONParser;
 import com.codename1.io.rest.Response;
 import com.codename1.io.rest.Rest;
+import spacexlaunches.main.enumeration.Sort;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
@@ -22,11 +23,22 @@ public class WrkREST implements Constantes {
 
     }
 
-
+    /**
+     *
+     * @param email représente l'email de connexion.
+     * @param password représente le mot de passe de connexion.
+     * @return une Map de String d'Object si tout se passe bien ou null;
+     * @throws Exception si une erreur se produit.
+     */
     public Map<String, Object> postUserLogin(String email, String password) throws Exception {
         Map<String, Object> result = null;
         if (email != null && password != null) {
-            result = responseToMap(Rest.post(REST_SERVER_URL).queryParam("action", "POST_USER_LOGIN").queryParam("email", email).queryParam("password", password).getAsBytes());
+            result = responseToMap(Rest.post(REST_SERVER_URL)
+                    .queryParam("action", "POST_USER_LOGIN")
+                    .queryParam("email", email)
+                    .queryParam("password", password)
+                    .getAsBytes()
+            );
         }
         return result;
     }
@@ -47,7 +59,10 @@ public class WrkREST implements Constantes {
 
 
     public boolean isUserConnected() throws Exception {
-        Map<String, Object> response = responseToMap(Rest.get(REST_SERVER_URL).queryParam("action", "IS_USER_CONNECTED").getAsBytes());
+        Map<String, Object> response = responseToMap(Rest.get(REST_SERVER_URL)
+                .queryParam("action", "IS_USER_CONNECTED")
+                .getAsBytes()
+        );
         return Boolean.parseBoolean(response.get("isUserConnected").toString());
     }
 
@@ -109,6 +124,12 @@ public class WrkREST implements Constantes {
             }
         }
         return result;
+    }
+
+
+    public ArrayList<Launch> getAllLaunches(Sort sort) throws Exception {
+   //SWITCH CASE ...
+        return null;
     }
 
 
@@ -187,6 +208,12 @@ public class WrkREST implements Constantes {
     }
 
 
+    /**
+     *
+     * @param response
+     * @return
+     * @throws Exception
+     */
     private Launch createLaunchObject(Map<String, Object> response) throws Exception {
         Launch result = null;
         if (response != null) {
@@ -209,6 +236,12 @@ public class WrkREST implements Constantes {
         return result;
     }
 
+    /**
+     *
+     * @param response
+     * @return
+     * @throws Exception
+     */
     private Map<String, Object> responseToMap(Response<byte[]> response) throws Exception {
         Map<String, Object> result = new HashMap<>();
         if (response != null) {

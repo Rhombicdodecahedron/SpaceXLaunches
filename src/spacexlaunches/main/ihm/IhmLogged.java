@@ -1,20 +1,36 @@
 package spacexlaunches.main.ihm;
 
 import com.codename1.components.MultiButton;
-import com.codename1.ui.Command;
-import com.codename1.ui.Component;
-import com.codename1.ui.Form;
-import com.codename1.ui.InfiniteContainer;
+import com.codename1.ui.*;
 import com.codename1.ui.events.ActionEvent;
+import com.codename1.ui.layouts.BorderLayout;
+import com.codename1.ui.layouts.BoxLayout;
+import com.codename1.ui.layouts.GridBagLayout;
+import com.codename1.ui.list.GenericListCellRenderer;
 import spacexlaunches.main.beans.Launch;
+import spacexlaunches.main.enumeration.Sort;
 import spacexlaunches.main.utils.DateUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class IhmLogged extends Form {
 
     private Ihm refIhm;
+    private ComboBox<Map<String, Object>> sort;
 
+    public IhmLogged() {
+        this(com.codename1.ui.util.Resources.getGlobalResources());
+    }
+
+
+    public IhmLogged(com.codename1.ui.util.Resources resourceObjectInstance) {
+        initGuiBuilderComponents(resourceObjectInstance);
+        getToolbar().setUIID("Transparent");
+        getToolbar().setTitle("SpaceX Launches");
+        createSortCombobox();
+    }
 
     public void showAllLaunches() {
         removeAll();
@@ -26,7 +42,8 @@ public class IhmLogged extends Form {
                 MultiButton[] multiButtons = null;
                 try {
                     if (index == 0) {
-                        launches = refIhm.getAllLaunches();
+                        launches = refIhm.getAllLaunches(Sort.ASC_DATE);
+                       // launches = refIhm.getAllLaunches();
                     }
                     if (launches.size() > 0) {
 
@@ -53,7 +70,7 @@ public class IhmLogged extends Form {
                                 }
                             }
                         }
-                    }else{
+                    } else {
                         removeAll();
                         multiButtons = new MultiButton[1];
                         multiButtons[0] = new MultiButton();
@@ -68,9 +85,8 @@ public class IhmLogged extends Form {
             }
         };
         list.setScrollableY(true);
-        addComponent(list);
+        add(list);
     }
-
 
     private MultiButton createLaunchCard(Launch launch) {
         MultiButton result = null;
@@ -87,21 +103,28 @@ public class IhmLogged extends Form {
         return result;
     }
 
-
-    public IhmLogged() {
-        this(com.codename1.ui.util.Resources.getGlobalResources());
+    private void createSortCombobox() {
+        sort = new ComboBox<>(createListEntry("A Game of Thrones", "1996"),
+                createListEntry("A Clash Of Kings", "1998"),
+                createListEntry("A Storm Of Swords", "2000"),
+                createListEntry("A Feast For Crows", "2005"),
+                createListEntry("A Dance With Dragons", "2011"),
+                createListEntry("The Winds of Winter", "2016 (please, please, please)"),
+                createListEntry("A Dream of Spring", "Ugh"));
+        sort.setRenderer(new GenericListCellRenderer<>(new MultiButton(), new MultiButton()));
     }
 
-
-    public IhmLogged(com.codename1.ui.util.Resources resourceObjectInstance) {
-        initGuiBuilderComponents(resourceObjectInstance);
-        getToolbar().setUIID("Transparent");
-        getToolbar().setTitle("SpaceX Launches");
-    }
 
     private void onLogoutCommand(ActionEvent ev, Command command) {
         refIhm.disconnect();
         refIhm.goBackHome();
+    }
+
+    private Map<String, Object> createListEntry(String name, String date) {
+        Map<String, Object> entry = new HashMap<>();
+        entry.put("Line1", name);
+        entry.put("Line2", date);
+        return entry;
     }
 
 

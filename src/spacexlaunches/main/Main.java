@@ -16,7 +16,6 @@ import com.codename1.ui.layouts.BoxLayout;
  */
 public class Main {
 
-    private Form current;
     private Ctrl ctrl;
 
 
@@ -28,27 +27,18 @@ public class Main {
         ctrl.setRefWrk(wrk);
         wrk.setRefCtrl(ctrl);
         ihm.setRefCtrl(ctrl);
-//  ctrl.start();
+        //  ctrl.start();
     }
 
     public void start() {
-       /* if (current != null) {
-            current.show();
-            return;
-        }*/
-
         ctrl.start();
-           ctrl.isUserConnectedAndShowView();
+        ctrl.isUserConnectedAndShowView();
         // System.out.println(getCurrentForm().getName());
         //  System.out.println("asdasd");
     }
 
     public void stop() {
-        current = getCurrentForm();
-        if (current instanceof Dialog) {
-            ((Dialog) current).dispose();
-            current = getCurrentForm();
-        }
+        ctrl.stop();
     }
 
     public void destroy() {
