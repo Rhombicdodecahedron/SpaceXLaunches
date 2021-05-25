@@ -32,7 +32,6 @@ public class Main {
 
     public void start() {
         ctrl.start();
-        ctrl.isUserConnectedAndShowView();
         // System.out.println(getCurrentForm().getName());
         //  System.out.println("asdasd");
     }

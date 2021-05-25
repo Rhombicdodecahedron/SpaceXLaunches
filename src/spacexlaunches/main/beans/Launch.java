@@ -1,11 +1,6 @@
 package spacexlaunches.main.beans;
 
-import com.codename1.io.Externalizable;
-import com.codename1.io.Util;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.util.Comparator;
 import java.util.Date;
 
 public class Launch {
@@ -121,5 +116,27 @@ public class Launch {
                 ", details='" + details + '\'' +
                 '}';
     }
+
+    public static Comparator<Launch> dateComparator = new Comparator<Launch>() {
+        @Override
+        public int compare(Launch launch1, Launch launch2) {
+            return (launch1.getLaunchDate().compareTo(launch2.getLaunchDate()));
+        }
+    };
+
+    public static Comparator<Launch> flightNumberComparator = new Comparator<Launch>() {
+        @Override
+        public int compare(Launch launch1, Launch launch2) {
+            return (Integer.compare(launch2.getFlightNumber(), launch1.getFlightNumber()));
+        }
+    };
+
+    public static Comparator<Launch> nameComparator = new Comparator<Launch>() {
+        @Override
+        public int compare(Launch launch1, Launch launch2) {
+            return (launch1.getName().compareTo(launch2.getName()));
+        }
+    };
+
 
 }

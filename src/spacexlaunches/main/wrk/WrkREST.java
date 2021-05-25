@@ -24,8 +24,7 @@ public class WrkREST implements Constantes {
     }
 
     /**
-     *
-     * @param email représente l'email de connexion.
+     * @param email    représente l'email de connexion.
      * @param password représente le mot de passe de connexion.
      * @return une Map de String d'Object si tout se passe bien ou null;
      * @throws Exception si une erreur se produit.
@@ -68,7 +67,6 @@ public class WrkREST implements Constantes {
 
 
     public boolean disconnect() throws Exception {
-
         //FAIRE RETOURNER LA MAP DE STRING D'OBJECT ET ENSUITE DANS LE CONTROLLEUR VERIFIER SI C'EST OK SINON AFFICHER LE MESSAGE D'ERREUR.
         Map<String, Object> response = responseToMap(Rest.get(REST_SERVER_URL).queryParam("action", "GET_USER_LOGOUT").acceptJson().getAsBytes());
         return !Boolean.parseBoolean(response.get("error").toString());
@@ -107,7 +105,37 @@ public class WrkREST implements Constantes {
     }
 
 
-    public ArrayList<Launch> getAllLaunches() throws Exception {
+    public ArrayList<Launch> getAllLaunches(Sort sort) throws Exception {
+        ArrayList<Launch> launches = getAllLaunches();
+        if (sort != null) {
+            switch (sort) {
+                case ASC_DATE:
+                    launches.sort(Launch.dateComparator);
+                    break;
+                case DESC_DATE:
+                    launches.sort(Launch.dateComparator);
+                    Collections.reverse(launches);
+                    break;
+                case ASC_FLIGHT_NUMBER:
+                    launches.sort(Launch.flightNumberComparator);
+                    break;
+                case DESC_FLIGHT_NUMBER:
+                    launches.sort(Launch.flightNumberComparator);
+                    Collections.reverse(launches);
+                    break;
+                case ASC_NAME:
+                    launches.sort(Launch.nameComparator);
+                    break;
+                case DESC_NAME:
+                    launches.sort(Launch.nameComparator);
+                    Collections.reverse(launches);
+                    break;
+            }
+        }
+        return launches;
+    }
+
+    private ArrayList<Launch> getAllLaunches() throws Exception {
         ArrayList<Launch> result = new ArrayList<>();
         Map<String, Object> out = responseToMap(Rest.get(SPACEX_API_URL + "launches/past").acceptJson().getAsBytes());
         if (rockets == null && launchPads == null) {
@@ -125,13 +153,6 @@ public class WrkREST implements Constantes {
         }
         return result;
     }
-
-
-    public ArrayList<Launch> getAllLaunches(Sort sort) throws Exception {
-   //SWITCH CASE ...
-        return null;
-    }
-
 
     public ArrayList<Rocket> getAllRockets() throws Exception {
         ArrayList<Rocket> result = new ArrayList<>();
@@ -209,7 +230,6 @@ public class WrkREST implements Constantes {
 
 
     /**
-     *
      * @param response
      * @return
      * @throws Exception
@@ -237,7 +257,6 @@ public class WrkREST implements Constantes {
     }
 
     /**
-     *
      * @param response
      * @return
      * @throws Exception

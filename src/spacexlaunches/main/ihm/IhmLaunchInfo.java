@@ -85,60 +85,60 @@ public class IhmLaunchInfo extends com.codename1.ui.Form {
         this.refIhm = refIhm;
     }
 
-    ////-- DON'T EDIT BELOW THIS LINE!!!
+    //////-- DON'T EDIT BELOW THIS LINE!!!
     protected com.codename1.ui.Label gui_txt_launch_name = new com.codename1.ui.Label();
     protected com.codename1.ui.Label gui_txt_img = new com.codename1.ui.Label();
     protected com.codename1.ui.Container gui_Container = new com.codename1.ui.Container(new com.codename1.ui.layouts.LayeredLayout());
     protected com.codename1.ui.TextArea gui_txt_area = new com.codename1.ui.TextArea();
 
 
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">
+// <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initGuiBuilderComponents(com.codename1.ui.util.Resources resourceObjectInstance) {
         setLayout(new com.codename1.ui.layouts.LayeredLayout());
         setInlineStylesTheme(resourceObjectInstance);
         setScrollableY(false);
-        setInlineStylesTheme(resourceObjectInstance);
+                setInlineStylesTheme(resourceObjectInstance);
         setTitle("");
         setName("IhmLaunchInfo");
         com.codename1.ui.Toolbar cn1Toolbar = getToolbar();
-        if (cn1Toolbar == null) {
-            cn1Toolbar = new com.codename1.ui.Toolbar();
-            setToolbar(cn1Toolbar);
+        if(cn1Toolbar == null) {
+                cn1Toolbar = new com.codename1.ui.Toolbar();
+                setToolbar(cn1Toolbar);
         }
         com.codename1.ui.Command cmd_Back = new com.codename1.ui.Command("Back") {
-            public void actionPerformed(com.codename1.ui.events.ActionEvent ev) {
-                onBackCommand(ev, this);
-            }
+                public void actionPerformed(com.codename1.ui.events.ActionEvent ev) {
+                        onBackCommand(ev, this);
+                }
         };
-        com.codename1.ui.FontImage.setMaterialIcon(cmd_Back, "\ue5c4".charAt(0), "TitleCommand");
+        com.codename1.ui.FontImage.setMaterialIcon(cmd_Back,"\ue5c4".charAt(0), "TitleCommand");
         cn1Toolbar.addCommandToLeftBar(cmd_Back);
         gui_txt_launch_name.setText("Launch Name");
-        gui_txt_launch_name.setInlineStylesTheme(resourceObjectInstance);
+                gui_txt_launch_name.setInlineStylesTheme(resourceObjectInstance);
         gui_txt_launch_name.setInlineAllStyles("font:6.0mm;");
         gui_txt_launch_name.setName("txt_launch_name");
         gui_txt_img.setText("Label");
-        gui_txt_img.setInlineStylesTheme(resourceObjectInstance);
+                gui_txt_img.setInlineStylesTheme(resourceObjectInstance);
         gui_txt_img.setInlineAllStyles("font:7.0mm;");
         gui_txt_img.setName("txt_img");
         gui_Container.setPreferredSizeStr("76.70166mm 79.41077mm");
         gui_Container.setScrollableY(false);
-        gui_Container.setInlineStylesTheme(resourceObjectInstance);
+                gui_Container.setInlineStylesTheme(resourceObjectInstance);
         gui_Container.setName("Container");
         gui_txt_area.setPreferredSizeStr("74.66982mm 28.953606mm");
         gui_txt_area.setText("TextArea");
-        gui_txt_area.setInlineStylesTheme(resourceObjectInstance);
+                gui_txt_area.setInlineStylesTheme(resourceObjectInstance);
         gui_txt_area.setName("txt_area");
         gui_txt_area.setColumns(8);
         addComponent(gui_txt_launch_name);
         addComponent(gui_txt_img);
         addComponent(gui_Container);
         addComponent(gui_txt_area);
-        ((com.codename1.ui.layouts.LayeredLayout) gui_txt_launch_name.getParent().getLayout()).setInsets(gui_txt_launch_name, "6.859593% auto auto auto").setReferenceComponents(gui_txt_launch_name, "-1 -1 -1 -1").setReferencePositions(gui_txt_launch_name, "0.0 0.0 0.0 0.0");
-        ((com.codename1.ui.layouts.LayeredLayout) gui_txt_img.getParent().getLayout()).setInsets(gui_txt_img, "14.737406% auto auto auto").setReferenceComponents(gui_txt_img, "-1 -1 -1 -1").setReferencePositions(gui_txt_img, "0.0 0.0 0.0 0.0");
-        ((com.codename1.ui.layouts.LayeredLayout) gui_Container.getLayout()).setPreferredWidthMM((float) 76.70166);
-        ((com.codename1.ui.layouts.LayeredLayout) gui_Container.getLayout()).setPreferredHeightMM((float) 79.41077);
-        ((com.codename1.ui.layouts.LayeredLayout) gui_Container.getParent().getLayout()).setInsets(gui_Container, "29.577465% 0.0mm 26.478872% 0.0mm").setReferenceComponents(gui_Container, "-1 -1 -1 -1").setReferencePositions(gui_Container, "0.0 0.0 0.0 0.0");
-        ((com.codename1.ui.layouts.LayeredLayout) gui_txt_area.getParent().getLayout()).setInsets(gui_txt_area, "0.0mm 0.0mm 33.451958% auto").setReferenceComponents(gui_txt_area, "2 -1 -1 -1").setReferencePositions(gui_txt_area, "1.0 0.0 0.0 0.0");
+        ((com.codename1.ui.layouts.LayeredLayout)gui_txt_launch_name.getParent().getLayout()).setInsets(gui_txt_launch_name, "6.859593% auto auto auto").setReferenceComponents(gui_txt_launch_name, "-1 -1 -1 -1").setReferencePositions(gui_txt_launch_name, "0.0 0.0 0.0 0.0");
+        ((com.codename1.ui.layouts.LayeredLayout)gui_txt_img.getParent().getLayout()).setInsets(gui_txt_img, "14.737406% auto auto auto").setReferenceComponents(gui_txt_img, "-1 -1 -1 -1").setReferencePositions(gui_txt_img, "0.0 0.0 0.0 0.0");
+        ((com.codename1.ui.layouts.LayeredLayout)gui_Container.getLayout()).setPreferredWidthMM((float)76.70166);
+        ((com.codename1.ui.layouts.LayeredLayout)gui_Container.getLayout()).setPreferredHeightMM((float)79.41077);
+        ((com.codename1.ui.layouts.LayeredLayout)gui_Container.getParent().getLayout()).setInsets(gui_Container, "29.577465% 0.0mm 26.478872% 0.0mm").setReferenceComponents(gui_Container, "-1 -1 -1 -1").setReferencePositions(gui_Container, "0.0 0.0 0.0 0.0");
+        ((com.codename1.ui.layouts.LayeredLayout)gui_txt_area.getParent().getLayout()).setInsets(gui_txt_area, "0.0mm 0.0mm 33.451958% auto").setReferenceComponents(gui_txt_area, "2 -1 -1 -1").setReferencePositions(gui_txt_area, "1.0 0.0 0.0 0.0");
     }// </editor-fold>
 
 //-- DON'T EDIT ABOVE THIS LINE!!!

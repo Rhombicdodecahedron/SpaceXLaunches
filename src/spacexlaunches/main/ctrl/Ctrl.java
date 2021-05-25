@@ -1,6 +1,8 @@
 package spacexlaunches.main.ctrl;
 
+import com.codename1.ui.Form;
 import spacexlaunches.main.beans.Launch;
+import spacexlaunches.main.enumeration.ListIhm;
 import spacexlaunches.main.enumeration.Sort;
 import spacexlaunches.main.ihm.Ihm;
 import spacexlaunches.main.wrk.Wrk;
@@ -22,10 +24,6 @@ public class Ctrl {
     }
 
 
-    public void afficheLogin() {
-        refIhm.afficheLogin();
-    }
-
     public void start() {
         // use two network threads instead of one
         updateNetworkThreadCount(2);
@@ -43,9 +41,7 @@ public class Ctrl {
 
             refIhm.showError("There was a networking error in the connection to " + err.getConnectionRequest().getUrl());
         });
-
-        refIhm.showCurrentView();
-
+        showCurrentView();
     }
 
     public void checkLogin(String email, String password) {
@@ -55,7 +51,7 @@ public class Ctrl {
                 boolean isError = Boolean.parseBoolean(response.get("error").toString());
                 String message = response.get("message").toString();
                 if (!isError) {
-                    afficheLogged();
+                    refIhm.afficheLogged();
                 } else {
                     refIhm.showError(message);
                 }
@@ -63,7 +59,7 @@ public class Ctrl {
                 refIhm.showError(e.getMessage());
             }
         } else {
-            refIhm.showError("You need to complete all fields of the form !");
+            refIhm.showError("You haven't completed all the fields of this form !");
         }
     }
 
@@ -74,7 +70,7 @@ public class Ctrl {
                 boolean isError = Boolean.parseBoolean(response.get("error").toString());
                 String message = response.get("message").toString();
                 if (!isError) {
-                    afficheLogged();
+                    refIhm.afficheLogged();
                 } else {
                     refIhm.showError(message);
                 }
@@ -89,31 +85,6 @@ public class Ctrl {
     public ArrayList<Launch> getAllLaunches(Sort sort) throws Exception {
         return refWrk.getAllLaunches(sort);
     }
-    public ArrayList<Launch> getAllLaunches() throws Exception {
-        return refWrk.getAllLaunches();
-    }
-    public void afficheHome() {
-        refIhm.afficheHome();
-    }
-
-    public void afficheLogged() {
-        //TESTER SI L'UTILISATEUR EST CONNECTE OU NON
-        refIhm.afficheLogged();
-        //getAllLaunches();
-    }
-
-    public void isUserConnectedAndShowView() {
-        try {
-            if (refWrk.isUserConnected()) {
-                afficheLogged();
-            } else {
-                afficheHome();
-            }
-        } catch (Exception e) {
-            refIhm.showError(e.getMessage());
-        }
-    }
-
 
     public Launch getNextLaunches() throws Exception {
         return refWrk.getNextLaunch();
@@ -121,14 +92,12 @@ public class Ctrl {
 
     public void disconnect() {
         //faire une popup qui pose une question de si nous voulons vraiment nous déconnecter
-        if (refIhm.askPopUp("Yep")) {
-            try {
-                if (!refWrk.disconnect()) {
-                    refIhm.infoPopUp("Info", "Vous avez correctement été déconecté !", "OK", null);
-                }
-            } catch (Exception e) {
-                refIhm.showError(e.getMessage());
+        try {
+            if (refWrk.disconnect()) {
+                refIhm.infoPopUp("Info", "Vous avez correctement été déconecté !", "OK", null);
             }
+        } catch (Exception e) {
+            refIhm.showError(e.getMessage());
         }
     }
 
@@ -141,6 +110,56 @@ public class Ctrl {
         }*/
     }
 
+
+    public void showCurrentView() {
+        try {
+            boolean isUserConnected = refWrk.isUserConnected();
+            try {
+                switch (ListIhm.valueOf(getCurrentForm().getName())) {
+                    case IhmHome:
+                        if (!isUserConnected) {
+                            refIhm.afficheHome();
+                        } else {
+                            refIhm.afficheLogged();
+                        }
+                        break;
+                    case IhmLogin:
+                        if (!isUserConnected) {
+                            refIhm.afficheLogin();
+                        } else {
+                            refIhm.afficheLogged();
+                        }
+                        break;
+                    case IhmRegister:
+                        if (!isUserConnected) {
+                            refIhm.afficheRegister();
+                        } else {
+                            refIhm.afficheLogged();
+                        }
+                        break;
+                    case IhmLogged:
+                        if (isUserConnected) {
+                            refIhm.afficheLogged();
+                        } else {
+                            refIhm.afficheHome();
+                        }
+                        break;
+                    case IhmLaunchInfo:
+                        //TODO
+                        break;
+                }
+            } catch (NullPointerException e) {
+                if (isUserConnected) {
+                    refIhm.afficheLogged();
+                } else {
+                    refIhm.afficheHome();
+                }
+            }
+        } catch (Exception e) {
+            refIhm.showError(e.getMessage());
+        }
+
+    }
 
     //SETTER
     public void setRefIhm(Ihm refIhm) {

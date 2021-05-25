@@ -19,10 +19,6 @@ public class Wrk {
     }
 
 
-    public ArrayList<Launch> getAllLaunches() throws Exception {
-        return wrkREST.getAllLaunches();
-    }
-
     public ArrayList<Launch> getAllLaunches(Sort sort) throws Exception {
         return wrkREST.getAllLaunches(sort);
     }

@@ -3,9 +3,6 @@ package spacexlaunches.main.ihm;
 import com.codename1.components.MultiButton;
 import com.codename1.ui.*;
 import com.codename1.ui.events.ActionEvent;
-import com.codename1.ui.layouts.BorderLayout;
-import com.codename1.ui.layouts.BoxLayout;
-import com.codename1.ui.layouts.GridBagLayout;
 import com.codename1.ui.list.GenericListCellRenderer;
 import spacexlaunches.main.beans.Launch;
 import spacexlaunches.main.enumeration.Sort;
@@ -42,7 +39,7 @@ public class IhmLogged extends Form {
                 MultiButton[] multiButtons = null;
                 try {
                     if (index == 0) {
-                        launches = refIhm.getAllLaunches(Sort.ASC_DATE);
+                        launches = refIhm.getAllLaunches(null);
                        // launches = refIhm.getAllLaunches();
                     }
                     if (launches.size() > 0) {
@@ -132,29 +129,29 @@ public class IhmLogged extends Form {
         this.refIhm = refIhm;
     }
 
-    //////-- DON'T EDIT BELOW THIS LINE!!!
+    ////////-- DON'T EDIT BELOW THIS LINE!!!
 
 
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">
+// <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initGuiBuilderComponents(com.codename1.ui.util.Resources resourceObjectInstance) {
         setLayout(new com.codename1.ui.layouts.LayeredLayout());
         setInlineStylesTheme(resourceObjectInstance);
         setEnabled(true);
         setScrollableY(false);
-        setInlineStylesTheme(resourceObjectInstance);
+                setInlineStylesTheme(resourceObjectInstance);
         setTitle("SpaceX Launches");
         setName("IhmLogged");
         com.codename1.ui.Toolbar cn1Toolbar = getToolbar();
-        if (cn1Toolbar == null) {
-            cn1Toolbar = new com.codename1.ui.Toolbar();
-            setToolbar(cn1Toolbar);
+        if(cn1Toolbar == null) {
+                cn1Toolbar = new com.codename1.ui.Toolbar();
+                setToolbar(cn1Toolbar);
         }
         com.codename1.ui.Command cmd_Logout = new com.codename1.ui.Command("") {
-            public void actionPerformed(com.codename1.ui.events.ActionEvent ev) {
-                onLogoutCommand(ev, this);
-            }
+                public void actionPerformed(com.codename1.ui.events.ActionEvent ev) {
+                        onLogoutCommand(ev, this);
+                }
         };
-        com.codename1.ui.FontImage.setMaterialIcon(cmd_Logout, "\ue879".charAt(0), "TitleCommand");
+        com.codename1.ui.FontImage.setMaterialIcon(cmd_Logout,"\ue879".charAt(0), "TitleCommand");
         cn1Toolbar.addCommandToLeftBar(cmd_Logout);
     }// </editor-fold>
 

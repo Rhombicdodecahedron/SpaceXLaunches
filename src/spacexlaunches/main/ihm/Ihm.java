@@ -15,8 +15,6 @@ import java.util.ArrayList;
 public class Ihm {
 
     private Ctrl refCtrl;
-    private Form current;
-
     private final IhmRegister ihmRegister;
     private final IhmHome ihmHome;
     private final IhmLogin ihmLogin;
@@ -90,20 +88,8 @@ public class Ihm {
         ihmHome.showBack();
     }
 
-    public void showLoadingScreen() {
-        infiniteProgress = new InfiniteProgress().showInfiniteBlocking();
-    }
-
-    public void hideLoadingScreen() {
-        infiniteProgress.dispose();
-    }
-
     public ArrayList<Launch> getAllLaunches(Sort sort) throws Exception {
         return refCtrl.getAllLaunches(sort);
-    }
-
-    public ArrayList<Launch> getAllLaunches() throws Exception {
-        return refCtrl.getAllLaunches();
     }
 
     public Launch getNextLaunch() throws Exception {
@@ -131,9 +117,4 @@ public class Ihm {
         return Dialog.show("Confirmation", message, "Yes", "No");
     }
 
-
-    public void showCurrentView() {
-
-
-    }
 }
