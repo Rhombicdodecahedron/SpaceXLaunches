@@ -7,7 +7,7 @@
         
     <project name="Main" default="default" basedir=".">
     <description>Builds, tests, and runs the project Main.</description>
-    <import file="nbproject/build-impl.xml"/>
+    <property file="codenameone_kotlin.properties"/><typedef resource="org/jetbrains/kotlin/ant/antlib.xml" classpath="${kotlin.lib}/kotlin-ant.jar"/><import file="nbproject/build-impl.xml"/>
     <property file="codenameone_settings.properties"/>
     <property name="automated" value="false" />
     <taskdef name="codeNameOne" classname="com.codename1.build.client.CodeNameOneBuildTask" classpath="CodeNameOneBuildClient.jar"/>
@@ -27,7 +27,11 @@
             bootclasspath="CLDC11.jar" excludes="${excludes}"
             classpath="${javac.classpath}:${build.classes.dir}">
             <src path="${test.src.dir}"/>
-        </javac>        
+        <withKotlin>
+            <compilerarg value="-no-stdlib"/>
+            <compilerarg value="-no-reflect"/>
+            <compilerarg value="-no-jdk"/>
+        </withKotlin></javac>
         <prepareTests classesDir="${build.classes.dir}" testClassesDir="${build.test.classes.dir}" seJar="JavaSE.jar" metaDataFile="${build.test.classes.dir}/tests.dat" />
         <jar jarfile="dist/unitTests.jar">
             <fileset dir="${build.classes.dir}"/>
@@ -61,10 +65,16 @@
             bootclasspath="lib/CLDC11.jar" excludes="${excludes}"
             classpath="${javac.classpath}:${build.classes.dir}">
             <src path="${src.dir}"/>
-        </javac>        
+        <withKotlin>
+            <compilerarg value="-no-stdlib"/>
+            <compilerarg value="-no-reflect"/>
+            <compilerarg value="-no-jdk"/>
+        </withKotlin>
+        </javac>
     </target>
 
     <target name="-post-compile">
+        <delete><fileset dir="${build.classes.dir}" includes="**/*.kt,**/*.kts"/></delete>
         <delete>
             <fileset dir="${build.classes.dir}" includes="**/package-info.class"/>
         </delete>
@@ -546,7 +556,11 @@
             classpathref="native.jars.class.path">
             <src path="native/javase"/>
             <src path="lib/impl/native/javase"/>
-        </javac>
+        <withKotlin>
+            <compilerarg value="-no-stdlib"/>
+            <compilerarg value="-no-reflect"/>
+            <compilerarg value="-no-jdk"/>
+        </withKotlin></javac>
         <copy todir="native/internal_tmp">
             <fileset dir="native/javase" excludes="*.java,*.jar"/>
             <fileset dir="lib/impl/native/javase" excludes="*.java,*.jar"/>

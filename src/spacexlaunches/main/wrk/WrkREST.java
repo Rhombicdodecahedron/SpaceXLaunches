@@ -110,26 +110,29 @@ public class WrkREST implements Constantes {
         if (sort != null) {
             switch (sort) {
                 case ASC_DATE:
-                    launches.sort(Launch.dateComparator);
+                    Collections.sort(launches, Launch.dateComparator);
                     break;
                 case DESC_DATE:
-                    launches.sort(Launch.dateComparator);
+                    Collections.sort(launches, Launch.dateComparator);
                     Collections.reverse(launches);
                     break;
                 case ASC_FLIGHT_NUMBER:
-                    launches.sort(Launch.flightNumberComparator);
+                    Collections.sort(launches, Launch.flightNumberComparator);
                     break;
                 case DESC_FLIGHT_NUMBER:
-                    launches.sort(Launch.flightNumberComparator);
+                    Collections.sort(launches, Launch.flightNumberComparator);
                     Collections.reverse(launches);
                     break;
+
                 case ASC_NAME:
-                    launches.sort(Launch.nameComparator);
+                    Collections.sort(launches, Launch.nameComparator);
                     break;
                 case DESC_NAME:
-                    launches.sort(Launch.nameComparator);
+                    Collections.sort(launches, Launch.nameComparator);
                     Collections.reverse(launches);
                     break;
+
+
             }
         }
         return launches;
