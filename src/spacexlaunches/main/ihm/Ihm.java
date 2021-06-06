@@ -86,8 +86,12 @@ public class Ihm {
         ihmHome.showBack();
     }
 
-    public ArrayList<Launch> getAllLaunches(Sort sort) throws Exception {
-        return refCtrl.getAllLaunches(sort);
+    public ArrayList<Launch> getAllLaunches(Sort sort, ArrayList<Launch> launches) {
+        return refCtrl.getAllLaunches(sort, launches);
+    }
+
+    public ArrayList<Launch> getAllLaunches() throws Exception{
+        return refCtrl.getAllLaunches();
     }
 
     public Launch getNextLaunch() throws Exception {

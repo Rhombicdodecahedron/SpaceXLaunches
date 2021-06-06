@@ -19,8 +19,11 @@ public class Wrk {
     }
 
 
-    public ArrayList<Launch> getAllLaunches(Sort sort) throws Exception {
-        return wrkREST.getAllLaunches(sort);
+    public ArrayList<Launch> getAllLaunches(Sort sort, ArrayList<Launch> launches){
+        return wrkREST.getAllLaunches(sort, launches);
+    }
+    public ArrayList<Launch> getAllLaunches() throws Exception{
+        return wrkREST.getAllLaunches();
     }
 
     public Map<String, Object> postUserLogin(String email, String password) throws Exception {

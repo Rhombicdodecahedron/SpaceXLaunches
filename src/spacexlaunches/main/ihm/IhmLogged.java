@@ -2,10 +2,10 @@ package spacexlaunches.main.ihm;
 
 import com.codename1.components.MultiButton;
 import com.codename1.components.ToastBar;
+import com.codename1.io.Storage;
 import com.codename1.ui.*;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.layouts.BoxLayout;
-import com.codename1.ui.list.GenericListCellRenderer;
 import com.codename1.ui.spinner.Picker;
 import spacexlaunches.main.beans.Launch;
 import spacexlaunches.main.enumeration.Sort;
@@ -18,7 +18,6 @@ import java.util.Map;
 public class IhmLogged extends Form {
 
     private Ihm refIhm;
-    private ComboBox<Map<String, Object>> sort;
 
     public IhmLogged() {
         this(com.codename1.ui.util.Resources.getGlobalResources());
@@ -29,13 +28,12 @@ public class IhmLogged extends Form {
         initGuiBuilderComponents(resourceObjectInstance);
         getToolbar().setUIID("Transparent");
         getToolbar().setTitle("SpaceX Launches");
-        createSortCombobox();
     }
 
     public void showAllLaunches() {
         removeAll();
 
-        String[] characters = { "Tyrion Lannister", "Jaime Lannister", "Cersei Lannister", "Daenerys Targaryen", "Jon Snow"};
+        String[] characters = {"Tyrion Lannister", "Jaime Lannister", "Cersei Lannister", "Daenerys Targaryen", "Jon Snow"};
 
         Picker p = new Picker();
         p.setStrings(characters);
@@ -50,15 +48,15 @@ public class IhmLogged extends Form {
                 MultiButton[] multiButtons = null;
                 try {
                     if (index == 0) {
-                        launches = refIhm.getAllLaunches(Sort.DESC_DATE);
-                       // launches = refIhm.getAllLaunches();
+                        launches = refIhm.getAllLaunches((Sort) Storage.getInstance().readObject("sort"), refIhm.getAllLaunches());
+
                     }
                     if (launches.size() > 0) {
 
                         if ((index + amount) < launches.size()) {
                             multiButtons = new MultiButton[launches.size() + 4];
                             //multiButtons[0].addActionListener(e -> ToastBar.showMessage("You picked " + p.getSelectedString(), FontImage.MATERIAL_INFO));
-                            MultiButton b = new MultiButton("Pick A Lanister...");
+                            MultiButton b = new MultiButton("Filters");
 //faire une méthode qui prend
                             b.addActionListener(e -> {
                                 Dialog d = new Dialog();
@@ -72,11 +70,8 @@ public class IhmLogged extends Form {
                                         b.setTextLine2(mb.getTextLine2());
                                         b.setIcon(mb.getIcon());
 
-                                        try {
-                                            launches = refIhm.getAllLaunches(sort);
-                                        } catch (Exception exception) {
 
-                                        }
+                                        launches = refIhm.getAllLaunches(sort, launches);
                                         d.dispose();
                                         b.revalidate();
                                     });
@@ -123,14 +118,8 @@ public class IhmLogged extends Form {
             }
         };
         list.setScrollableY(true);
-
-
-add(list);
-//gui_Container.addComponent(list);
-
-revalidate();
-
-        //gui_Container.add(list);
+        add(list);
+        revalidate();
     }
 
     private MultiButton createLaunchCard(Launch launch) {
@@ -147,18 +136,6 @@ revalidate();
         }
         return result;
     }
-
-    private void createSortCombobox() {
-        sort = new ComboBox<>(createListEntry("A Game of Thrones", "1996"),
-                createListEntry("A Clash Of Kings", "1998"),
-                createListEntry("A Storm Of Swords", "2000"),
-                createListEntry("A Feast For Crows", "2005"),
-                createListEntry("A Dance With Dragons", "2011"),
-                createListEntry("The Winds of Winter", "2016 (please, please, please)"),
-                createListEntry("A Dream of Spring", "Ugh"));
-        sort.setRenderer(new GenericListCellRenderer<>(new MultiButton(), new MultiButton()));
-    }
-
 
     private void onLogoutCommand(ActionEvent ev, Command command) {
         refIhm.disconnect();
@@ -182,41 +159,41 @@ revalidate();
     protected com.codename1.ui.Container gui_Container = new com.codename1.ui.Container(new com.codename1.ui.layouts.LayeredLayout());
 
 
-// <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initGuiBuilderComponents(com.codename1.ui.util.Resources resourceObjectInstance) {
         setLayout(new com.codename1.ui.layouts.LayeredLayout());
         setInlineStylesTheme(resourceObjectInstance);
         setEnabled(true);
         setScrollableY(false);
-                setInlineStylesTheme(resourceObjectInstance);
+        setInlineStylesTheme(resourceObjectInstance);
         setTitle("SpaceX Launches");
         setName("IhmLogged");
         com.codename1.ui.Toolbar cn1Toolbar = getToolbar();
-        if(cn1Toolbar == null) {
-                cn1Toolbar = new com.codename1.ui.Toolbar();
-                setToolbar(cn1Toolbar);
+        if (cn1Toolbar == null) {
+            cn1Toolbar = new com.codename1.ui.Toolbar();
+            setToolbar(cn1Toolbar);
         }
         com.codename1.ui.Command cmd_Logout = new com.codename1.ui.Command("") {
-                public void actionPerformed(com.codename1.ui.events.ActionEvent ev) {
-                        onLogoutCommand(ev, this);
-                }
+            public void actionPerformed(com.codename1.ui.events.ActionEvent ev) {
+                onLogoutCommand(ev, this);
+            }
         };
-        com.codename1.ui.FontImage.setMaterialIcon(cmd_Logout,"\ue879".charAt(0), "TitleCommand");
+        com.codename1.ui.FontImage.setMaterialIcon(cmd_Logout, "\ue879".charAt(0), "TitleCommand");
         cn1Toolbar.addCommandToLeftBar(cmd_Logout);
         gui_Picker.setPreferredSizeStr("148.5mm 16.9mm");
-                gui_Picker.setInlineStylesTheme(resourceObjectInstance);
+        gui_Picker.setInlineStylesTheme(resourceObjectInstance);
         gui_Picker.setName("Picker");
         gui_Container.setPreferredSizeStr("148.2mm 102.9mm");
-                gui_Container.setInlineStylesTheme(resourceObjectInstance);
+        gui_Container.setInlineStylesTheme(resourceObjectInstance);
         gui_Container.setName("Container");
         addComponent(gui_Picker);
         addComponent(gui_Container);
-        ((com.codename1.ui.layouts.LayeredLayout)gui_Picker.getLayout()).setPreferredWidthMM((float)148.5);
-        ((com.codename1.ui.layouts.LayeredLayout)gui_Picker.getLayout()).setPreferredHeightMM((float)16.9);
-        ((com.codename1.ui.layouts.LayeredLayout)gui_Picker.getParent().getLayout()).setInsets(gui_Picker, "0.0mm 0.0mm 85.95317% 0.0mm").setReferenceComponents(gui_Picker, "-1 -1 -1 -1").setReferencePositions(gui_Picker, "0.0 0.0 0.0 0.0");
-        ((com.codename1.ui.layouts.LayeredLayout)gui_Container.getLayout()).setPreferredWidthMM((float)148.2);
-        ((com.codename1.ui.layouts.LayeredLayout)gui_Container.getLayout()).setPreferredHeightMM((float)102.9);
-        ((com.codename1.ui.layouts.LayeredLayout)gui_Container.getParent().getLayout()).setInsets(gui_Container, "13.963211% 0.0mm 0.0mm 0.30000305mm").setReferenceComponents(gui_Container, "-1 -1 -1 -1").setReferencePositions(gui_Container, "0.0 0.0 0.0 0.0");
+        ((com.codename1.ui.layouts.LayeredLayout) gui_Picker.getLayout()).setPreferredWidthMM((float) 148.5);
+        ((com.codename1.ui.layouts.LayeredLayout) gui_Picker.getLayout()).setPreferredHeightMM((float) 16.9);
+        ((com.codename1.ui.layouts.LayeredLayout) gui_Picker.getParent().getLayout()).setInsets(gui_Picker, "0.0mm 0.0mm 85.95317% 0.0mm").setReferenceComponents(gui_Picker, "-1 -1 -1 -1").setReferencePositions(gui_Picker, "0.0 0.0 0.0 0.0");
+        ((com.codename1.ui.layouts.LayeredLayout) gui_Container.getLayout()).setPreferredWidthMM((float) 148.2);
+        ((com.codename1.ui.layouts.LayeredLayout) gui_Container.getLayout()).setPreferredHeightMM((float) 102.9);
+        ((com.codename1.ui.layouts.LayeredLayout) gui_Container.getParent().getLayout()).setInsets(gui_Container, "13.963211% 0.0mm 0.0mm 0.30000305mm").setReferenceComponents(gui_Container, "-1 -1 -1 -1").setReferencePositions(gui_Container, "0.0 0.0 0.0 0.0");
     }// </editor-fold>
 
 //-- DON'T EDIT ABOVE THIS LINE!!!

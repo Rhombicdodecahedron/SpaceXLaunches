@@ -105,9 +105,9 @@ public class WrkREST implements Constantes {
     }
 
 
-    public ArrayList<Launch> getAllLaunches(Sort sort) throws Exception {
-        ArrayList<Launch> launches = getAllLaunches();
-        if (sort != null) {
+    public ArrayList<Launch> getAllLaunches(Sort sort, ArrayList<Launch> launches)  {
+
+        if (sort != null && launches != null) {
             switch (sort) {
                 case ASC_DATE:
                     Collections.sort(launches, Launch.dateComparator);
@@ -131,14 +131,13 @@ public class WrkREST implements Constantes {
                     Collections.sort(launches, Launch.nameComparator);
                     Collections.reverse(launches);
                     break;
-
-
             }
         }
+        System.out.println(launches);
         return launches;
     }
 
-    private ArrayList<Launch> getAllLaunches() throws Exception {
+    public ArrayList<Launch> getAllLaunches() throws Exception {
         ArrayList<Launch> result = new ArrayList<>();
         Map<String, Object> out = responseToMap(Rest.get(SPACEX_API_URL + "launches/past").acceptJson().getAsBytes());
         if (rockets == null && launchPads == null) {

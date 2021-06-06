@@ -81,8 +81,12 @@ public class Ctrl {
         }
     }
 
-    public ArrayList<Launch> getAllLaunches(Sort sort) throws Exception {
-        return refWrk.getAllLaunches(sort);
+    public ArrayList<Launch> getAllLaunches(Sort sort, ArrayList<Launch> launches){
+        return refWrk.getAllLaunches(sort, launches);
+    }
+
+    public ArrayList<Launch> getAllLaunches() throws Exception{
+        return refWrk.getAllLaunches();
     }
 
     public Launch getNextLaunches() throws Exception {
