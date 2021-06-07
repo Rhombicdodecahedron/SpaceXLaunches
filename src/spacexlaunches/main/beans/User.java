@@ -11,9 +11,6 @@ public class User {
     private Date timestamp;
 
 
-    public User() {
-    }
-
     public User(int pk_user, String firstname, String lastname, String email, Date timestamp) {
         this.pk_user = pk_user;
         this.firstname = firstname;

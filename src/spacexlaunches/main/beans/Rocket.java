@@ -6,10 +6,6 @@ public class Rocket {
     private String name;
     private String type;
 
-
-    public Rocket() {
-    }
-
     public Rocket(String rocketId, String name, String type) {
         this.rocketId = rocketId;
         this.name = name;

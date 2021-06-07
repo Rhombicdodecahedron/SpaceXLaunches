@@ -1,100 +1,47 @@
 package spacexlaunches.main.wrk;
 
-import spacexlaunches.main.Constantes;
-import spacexlaunches.main.beans.*;
-import com.codename1.io.JSONParser;
-import com.codename1.io.rest.Response;
 import com.codename1.io.rest.Rest;
+import spacexlaunches.main.Constantes;
+import spacexlaunches.main.beans.Launch;
+import spacexlaunches.main.beans.LaunchPad;
+import spacexlaunches.main.beans.Rocket;
 import spacexlaunches.main.enumeration.Sort;
+import spacexlaunches.main.utils.RestUtils;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class WrkREST implements Constantes {
-
-
-    ArrayList<Rocket> rockets;
-    ArrayList<LaunchPad> launchPads;
-
-
-    public WrkREST() {
-
-    }
+/**
+ * Cette classe renferme le worker "WrkLaunches" de l'application.
+ *
+ * @author Stella Alexis
+ * @version 1.0
+ * @since 17.05.2021
+ */
+public class WrkLaunches implements Constantes {
 
     /**
-     * @param email    représente l'email de connexion.
-     * @param password représente le mot de passe de connexion.
-     * @return une Map de String d'Object si tout se passe bien ou null;
-     * @throws Exception si une erreur se produit.
+     * Liste contenant les pads de lancement.
      */
-    public Map<String, Object> postUserLogin(String email, String password) throws Exception {
-        Map<String, Object> result = null;
-        if (email != null && password != null) {
-            result = responseToMap(Rest.post(REST_SERVER_URL)
-                    .queryParam("action", "POST_USER_LOGIN")
-                    .queryParam("email", email)
-                    .queryParam("password", password)
-                    .getAsBytes()
-            );
-        }
-        return result;
+    ArrayList<LaunchPad> launchPads;
+    /**
+     * Liste contenant les différentes fusées.
+     */
+    ArrayList<Rocket> rockets;
+
+    private Wrk refWrk;
+
+    /**
+     * Constructeur de la classe WrkLaunches. Il défini les ArrayList launchPads et rockets.
+     */
+    public WrkLaunches() {
+        launchPads = new ArrayList<>();
+        rockets = new ArrayList<>();
     }
-
-    public Map<String, Object> postUserRegister(String firstname, String lastname, String email, String password) throws Exception {
-        Map<String, Object> result = null;
-        if (firstname != null && lastname != null && email != null && password != null) {
-            result = responseToMap(Rest.post(REST_SERVER_URL)
-                    .queryParam("action", "POST_USER_REGISTER")
-                    .queryParam("firstname", firstname)
-                    .queryParam("lastname", lastname)
-                    .queryParam("email", email)
-                    .queryParam("password", password)
-                    .getAsBytes());
-        }
-        return result;
-    }
-
-
-    public boolean isUserConnected() throws Exception {
-        Map<String, Object> response = responseToMap(Rest.get(REST_SERVER_URL)
-                .queryParam("action", "IS_USER_CONNECTED")
-                .getAsBytes()
-        );
-        return Boolean.parseBoolean(response.get("isUserConnected").toString());
-    }
-
-
-    public boolean disconnect() throws Exception {
-        //FAIRE RETOURNER LA MAP DE STRING D'OBJECT ET ENSUITE DANS LE CONTROLLEUR VERIFIER SI C'EST OK SINON AFFICHER LE MESSAGE D'ERREUR.
-        Map<String, Object> response = responseToMap(Rest.get(REST_SERVER_URL).queryParam("action", "GET_USER_LOGOUT").acceptJson().getAsBytes());
-        return !Boolean.parseBoolean(response.get("error").toString());
-    }
-
-    public User getSession() throws Exception {
-        User result = null;
-
-        Map<String, Object> response = responseToMap(Rest.get(REST_SERVER_URL).queryParam("action", "GET_SESSION").acceptJson().getAsBytes());
-        System.out.println(response);
-
-        Map<String, Object> user = (Map<String, Object>) response.get("user");
-
-        if (user != null) {
-            int pk = Integer.parseInt(user.get("pk_user").toString());
-            String firstname = (String) user.get("firstname");
-            String lastname = (String) user.get("lastname");
-            String email = (String) user.get("email");
-            Date timestamp = new SimpleDateFormat("yyyy-MM-dd").parse(user.get("timestamp").toString());
-            result = new User(pk, firstname, lastname, email, timestamp);
-        }
-        return result;
-    }
-
 
     public Launch getNextLaunch() throws Exception {
         Launch result = null;
-        Map<String, Object> response = responseToMap(Rest.get(SPACEX_API_URL + "launches/next").acceptJson().getAsBytes());
+        Map<String, Object> response = RestUtils.responseToMap(Rest.get(SPACEX_API_URL + "launches/next").acceptJson().getAsBytes());
         if (!response.isEmpty()) {
             Launch launch = createLaunchObject(response);
             if (launch != null) {
@@ -104,9 +51,7 @@ public class WrkREST implements Constantes {
         return result;
     }
 
-
-    public ArrayList<Launch> getAllLaunches(Sort sort, ArrayList<Launch> launches)  {
-
+    public ArrayList<Launch> getAllLaunches(Sort sort, ArrayList<Launch> launches) {
         if (sort != null && launches != null) {
             switch (sort) {
                 case ASC_DATE:
@@ -116,14 +61,13 @@ public class WrkREST implements Constantes {
                     Collections.sort(launches, Launch.dateComparator);
                     Collections.reverse(launches);
                     break;
-                case ASC_FLIGHT_NUMBER:
+                case DESC_FLIGHT_NUMBER:
                     Collections.sort(launches, Launch.flightNumberComparator);
                     break;
-                case DESC_FLIGHT_NUMBER:
+                case ASC_FLIGHT_NUMBER:
                     Collections.sort(launches, Launch.flightNumberComparator);
                     Collections.reverse(launches);
                     break;
-
                 case ASC_NAME:
                     Collections.sort(launches, Launch.nameComparator);
                     break;
@@ -131,21 +75,26 @@ public class WrkREST implements Constantes {
                     Collections.sort(launches, Launch.nameComparator);
                     Collections.reverse(launches);
                     break;
+                case DEFAULT:
+                    break;
             }
         }
-        System.out.println(launches);
         return launches;
     }
 
     public ArrayList<Launch> getAllLaunches() throws Exception {
         ArrayList<Launch> result = new ArrayList<>();
-        Map<String, Object> out = responseToMap(Rest.get(SPACEX_API_URL + "launches/past").acceptJson().getAsBytes());
-        if (rockets == null && launchPads == null) {
-            rockets = getAllRockets();
-            launchPads = getAllLaunchPads();
+        Map<String, Object> out = RestUtils.responseToMap(Rest.get(SPACEX_API_URL + "launches/past")
+                .onError(evt -> refWrk.showError(evt.getError().getMessage()))
+                .acceptJson()
+                .getAsBytes());
+
+        if (getRockets().isEmpty() || getLaunchpads().isEmpty()) {
+            setLaunchPads(getAllLaunchPads());
+            setRockets(getAllRockets());
         }
         if (!out.isEmpty()) {
-            List<Map<String, Object>> responses = (List<Map<String, Object>>) out.get("root");
+            List<Map<String, Object>> responses = (List<Map<String, Object>>) out.get(API_JSON_ROOT);
             for (Map<String, Object> response : responses) {
                 Launch launch = createLaunchObject(response);
                 if (launch != null) {
@@ -153,14 +102,19 @@ public class WrkREST implements Constantes {
                 }
             }
         }
+
         return result;
     }
 
     public ArrayList<Rocket> getAllRockets() throws Exception {
         ArrayList<Rocket> result = new ArrayList<>();
-        Map<String, Object> rockets = responseToMap(Rest.get(SPACEX_API_URL + "rockets").acceptJson().getAsBytes());
+        Map<String, Object> rockets = RestUtils.responseToMap(Rest.get(SPACEX_API_URL + "rockets")
+                .onError(evt -> refWrk.showError(evt.getError().getMessage()))
+                .acceptJson()
+                .getAsBytes()
+        );
         if (!rockets.isEmpty()) {
-            List<Map<String, Object>> responses = (List<Map<String, Object>>) rockets.get("root");
+            List<Map<String, Object>> responses = (List<Map<String, Object>>) rockets.get(API_JSON_ROOT);
             if (responses != null && !responses.isEmpty()) {
                 for (Map<String, Object> response : responses) {
                     if (response != null && !response.isEmpty()) {
@@ -178,9 +132,13 @@ public class WrkREST implements Constantes {
 
     public ArrayList<LaunchPad> getAllLaunchPads() throws Exception {
         ArrayList<LaunchPad> result = new ArrayList<>();
-        Map<String, Object> launchPads = responseToMap(Rest.get(SPACEX_API_URL + "launchpads").acceptJson().getAsBytes());
+        Map<String, Object> launchPads = RestUtils.responseToMap(Rest.get(SPACEX_API_URL + "launchpads")
+                .onError(evt -> refWrk.showError(evt.getError().getMessage()))
+                .acceptJson()
+                .getAsBytes()
+        );
         if (!launchPads.isEmpty()) {
-            List<Map<String, Object>> responses = (List<Map<String, Object>>) launchPads.get("root");
+            List<Map<String, Object>> responses = (List<Map<String, Object>>) launchPads.get(API_JSON_ROOT);
             if (responses != null && !responses.isEmpty()) {
                 for (Map<String, Object> response : responses) {
                     if (response != null && !response.isEmpty()) {
@@ -258,20 +216,23 @@ public class WrkREST implements Constantes {
         return result;
     }
 
-    /**
-     * @param response
-     * @return
-     * @throws Exception
-     */
-    private Map<String, Object> responseToMap(Response<byte[]> response) throws Exception {
-        Map<String, Object> result = new HashMap<>();
-        if (response != null) {
-            JSONParser p = new JSONParser();
-            InputStreamReader r = new InputStreamReader(new ByteArrayInputStream(response.getResponseData()));
-            result.putAll(p.parseJSON(r));
-        }
-        return result;
+    public void setRefWrk(Wrk refWrk) {
+        this.refWrk = refWrk;
     }
 
+    public ArrayList<LaunchPad> getLaunchpads() {
+        return launchPads;
+    }
 
+    public ArrayList<Rocket> getRockets() {
+        return rockets;
+    }
+
+    public void setLaunchPads(ArrayList<LaunchPad> launchPads) {
+        this.launchPads = launchPads;
+    }
+
+    public void setRockets(ArrayList<Rocket> rockets) {
+        this.rockets = rockets;
+    }
 }

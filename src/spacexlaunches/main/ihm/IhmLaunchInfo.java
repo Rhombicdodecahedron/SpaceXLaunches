@@ -10,12 +10,8 @@ import com.codename1.ui.table.TableModel;
 import spacexlaunches.main.beans.Launch;
 
 
-
 public class IhmLaunchInfo extends com.codename1.ui.Form {
-
-
     private Ihm refIhm;
-
 
     public IhmLaunchInfo() {
         this(com.codename1.ui.util.Resources.getGlobalResources());
@@ -69,9 +65,7 @@ public class IhmLaunchInfo extends com.codename1.ui.Form {
             } catch (IllegalArgumentException e) {
                 refIhm.showError(e.getMessage());
             }
-
         }
-
     }
 
     private void onBackCommand(ActionEvent ev, Command command) {
@@ -82,7 +76,7 @@ public class IhmLaunchInfo extends com.codename1.ui.Form {
         this.refIhm = refIhm;
     }
 
-    //////-- DON'T EDIT BELOW THIS LINE!!!
+    //////////-- DON'T EDIT BELOW THIS LINE!!!
     protected com.codename1.ui.Label gui_txt_launch_name = new com.codename1.ui.Label();
     protected com.codename1.ui.Label gui_txt_img = new com.codename1.ui.Label();
     protected com.codename1.ui.Container gui_Container = new com.codename1.ui.Container(new com.codename1.ui.layouts.LayeredLayout());

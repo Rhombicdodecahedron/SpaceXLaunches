@@ -21,17 +21,15 @@ public class IhmLogin extends com.codename1.ui.Form {
         refIhm.goBackHome();
     }
 
-
     private void onbtm_loginActionEvent(ActionEvent ev) {
         refIhm.checkLogin(gui_txt_email.getText(), gui_txt_password.getText());
     }
-
 
     public void setRefIhm(Ihm refIhm) {
         this.refIhm = refIhm;
     }
 
-    ////////-- DON'T EDIT BELOW THIS LINE!!!
+    //////////-- DON'T EDIT BELOW THIS LINE!!!
     protected com.codename1.ui.TextField gui_txt_email = new com.codename1.ui.TextField();
     protected com.codename1.ui.TextField gui_txt_password = new com.codename1.ui.TextField();
     protected com.codename1.ui.Button gui_btm_login = new com.codename1.ui.Button();

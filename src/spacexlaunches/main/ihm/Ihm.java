@@ -1,14 +1,14 @@
 package spacexlaunches.main.ihm;
 
-import com.codename1.ui.Toolbar;
+import com.codename1.components.ToastBar;
+import com.codename1.ui.*;
 import spacexlaunches.main.beans.Launch;
 import spacexlaunches.main.ctrl.Ctrl;
-import com.codename1.ui.Dialog;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
 import spacexlaunches.main.enumeration.Sort;
-
 import java.util.ArrayList;
+import static com.codename1.ui.CN.getCurrentForm;
 
 public class Ihm {
 
@@ -18,10 +18,6 @@ public class Ihm {
     private final IhmLogin ihmLogin;
     private final IhmLogged ihmLogged;
     private final IhmLaunchInfo ihmLaunchInfo;
-
-
-    private Dialog infiniteProgress;
-
 
     public Ihm() {
         Resources theme = UIManager.initFirstTheme("/theme");
@@ -58,7 +54,6 @@ public class Ihm {
         ihmLogged.showAllLaunches();
     }
 
-
     public void checkLogin(String email, String password) {
         refCtrl.checkLogin(email, password);
     }
@@ -67,12 +62,9 @@ public class Ihm {
         refCtrl.checkRegister(firstname, lastname, email, password);
     }
 
-
     public void infoPopUp(String title, String text, String okText, String cancelText) {
         Dialog.show(title, text, okText, cancelText);
-        // LaunchErrorDialog.show(null, null, true);
     }
-
 
     public void setRefCtrl(Ctrl refCtrl) {
         this.refCtrl = refCtrl;
@@ -90,7 +82,7 @@ public class Ihm {
         return refCtrl.getAllLaunches(sort, launches);
     }
 
-    public ArrayList<Launch> getAllLaunches() throws Exception{
+    public ArrayList<Launch> getAllLaunches() throws Exception {
         return refCtrl.getAllLaunches();
     }
 
@@ -100,6 +92,14 @@ public class Ihm {
 
     public void disconnect() {
         refCtrl.disconnect();
+    }
+
+    public void showToastbarInfo(String message) {
+        ToastBar.Status status = ToastBar.getInstance().createStatus();
+        status.setMessage(message);
+        // status.setIcon(Image.createImage(FontImage.MATERIAL_INFO));
+        status.setExpires(5000);  // only show the status for 3 seconds, then have it automatically clear
+        status.show();
     }
 
     public void showError(String message) {
@@ -119,4 +119,18 @@ public class Ihm {
         return Dialog.show("Confirmation", message, "Yes", "No");
     }
 
+    public boolean writeSortToStorage(String sort) {
+        return refCtrl.writeSortToStorage(sort);
+    }
+
+    public Sort readSortFromStorage() {
+        return refCtrl.readSortFromStorage();
+    }
+
+    public void stop() {
+        Form current = getCurrentForm();
+        if (current instanceof Dialog) {
+            ((Dialog) current).dispose();
+        }
+    }
 }

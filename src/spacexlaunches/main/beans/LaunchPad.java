@@ -8,10 +8,6 @@ public class LaunchPad {
     private String region;
     private String id;
 
-    public LaunchPad() {
-
-    }
-
     public LaunchPad(String id, String name, String fullName, String locality, String region) {
         this.id = id;
         this.name = name;

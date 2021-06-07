@@ -6,5 +6,6 @@ public enum Sort {
     ASC_FLIGHT_NUMBER,
     DESC_FLIGHT_NUMBER,
     ASC_DATE,
-    DESC_DATE
+    DESC_DATE,
+    DEFAULT
 }

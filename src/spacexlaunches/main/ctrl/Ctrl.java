@@ -18,10 +18,6 @@ public class Ctrl {
     private Ihm refIhm;
     private Wrk refWrk;
 
-    public Ctrl() {
-
-    }
-
 
     public void start() {
         // use two network threads instead of one
@@ -37,7 +33,6 @@ public class Ctrl {
                 Log.e(err.getError());
             }
             Log.sendLogAsync();
-
             refIhm.showError("There was a networking error in the connection to " + err.getConnectionRequest().getUrl());
         });
         showCurrentView();
@@ -81,20 +76,14 @@ public class Ctrl {
         }
     }
 
-    public ArrayList<Launch> getAllLaunches(Sort sort, ArrayList<Launch> launches){
+    public ArrayList<Launch> getAllLaunches(Sort sort, ArrayList<Launch> launches) {
         return refWrk.getAllLaunches(sort, launches);
     }
-
-    public ArrayList<Launch> getAllLaunches() throws Exception{
-        return refWrk.getAllLaunches();
-    }
-
     public Launch getNextLaunches() throws Exception {
         return refWrk.getNextLaunch();
     }
 
     public void disconnect() {
-        //faire une popup qui pose une question de si nous voulons vraiment nous déconnecter
         try {
             if (refWrk.disconnect()) {
                 refIhm.infoPopUp("Info", "Vous avez correctement été déconecté !", "OK", null);
@@ -105,12 +94,7 @@ public class Ctrl {
     }
 
     public void stop() {
-        /*
-        current = getCurrentForm();
-        if (current instanceof Dialog) {
-            ((Dialog) current).dispose();
-            current = getCurrentForm();
-        }*/
+        refIhm.stop();
     }
 
 
@@ -156,12 +140,25 @@ public class Ctrl {
                     refIhm.afficheLogged();
                 } else {
                     refIhm.afficheHome();
+                    refIhm.showToastbarInfo("You are not connected !");
                 }
             }
         } catch (Exception e) {
             refIhm.showError(e.getMessage());
         }
 
+    }
+
+    public boolean writeSortToStorage(String sort) {
+        return refWrk.writeSortToStorage(sort);
+    }
+
+    public Sort readSortFromStorage() {
+        return refWrk.readSortFromStorage();
+    }
+
+    public ArrayList<Launch> getAllLaunches() throws Exception {
+        return refWrk.getAllLaunches();
     }
 
     //SETTER
@@ -173,4 +170,7 @@ public class Ctrl {
         this.refWrk = refWrk;
     }
 
+    public void showError(String message) {
+        refIhm.showError(message);
+    }
 }

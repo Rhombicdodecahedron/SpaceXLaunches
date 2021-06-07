@@ -124,7 +124,6 @@ public class Launch {
         }
     };
 
-
     public static Comparator<Launch> flightNumberComparator = new Comparator<Launch>() {
         @Override
         public int compare(Launch launch1, Launch launch2) {
@@ -138,29 +137,5 @@ public class Launch {
             return (launch1.getName().compareTo(launch2.getName()));
         }
     };
-/*
-
-
-   public static Comparator<Launch> dateComparator = new Comparator<Launch>() {
-        @Override
-        public int compare(Launch launch1, Launch launch2) {
-            return (launch1.getLaunchDate().compareTo(launch2.getLaunchDate()));
-        }
-    };
-
-    public static Comparator<Launch> flightNumberComparator = new Comparator<Launch>() {
-        @Override
-        public int compare(Launch launch1, Launch launch2) {
-            return (Integer.compare(launch2.getFlightNumber(), launch1.getFlightNumber()));
-        }
-    };
-
-    public static Comparator<Launch> nameComparator = new Comparator<Launch>() {
-        @Override
-        public int compare(Launch launch1, Launch launch2) {
-            return (launch1.getName().compareTo(launch2.getName()));
-        }
-    };
-*/
 
 }

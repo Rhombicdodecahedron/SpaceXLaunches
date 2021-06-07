@@ -30,7 +30,7 @@ public class IhmHome extends com.codename1.ui.Form {
 
     private void onInfoCommand(ActionEvent ev, Command command) {
     }
-    ////-- DON'T EDIT BELOW THIS LINE!!!
+    //////-- DON'T EDIT BELOW THIS LINE!!!
     protected com.codename1.ui.Container gui_Container = new com.codename1.ui.Container(new com.codename1.ui.layouts.LayeredLayout());
     protected com.codename1.ui.Label gui_Label = new com.codename1.ui.Label();
     protected com.codename1.ui.Button gui_btn_load_login = new com.codename1.ui.Button();

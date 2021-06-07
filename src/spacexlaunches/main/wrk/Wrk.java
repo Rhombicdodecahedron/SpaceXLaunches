@@ -8,51 +8,94 @@ import spacexlaunches.main.enumeration.Sort;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Cette classe renferme le worker principal de l'application.
+ *
+ * @author Stella Alexis
+ * @version 1.0
+ * @since 17.05.2021
+ */
 public class Wrk {
 
+    /**
+     * Instance de la classe Ctrl
+     */
     private Ctrl refCtrl;
+    /**
+     * Instance de la classe WrkStorage
+     */
+    private final WrkStorage wrkStorage;
+    /**
+     * Instance de la classe WrkLaunches
+     */
+    private final WrkLaunches wrkLaunches;
+    /**
+     * Instance de la classe WrkDatabase
+     */
+    private final WrkDatabase wrkDatabase;
 
-    private final WrkREST wrkREST;
-
+    /**
+     * Constructeur de la classe Worker de l'application. Il définit les
+     * instances de WrkStorage, WrkDataBase et WrkLaunches.
+     */
     public Wrk() {
-        wrkREST = new WrkREST();
+        wrkStorage = new WrkStorage();
+        wrkLaunches = new WrkLaunches();
+        wrkLaunches.setRefWrk(this);
+        wrkDatabase = new WrkDatabase();
+        wrkDatabase.setRefWrk(this);
     }
 
+    /* ----------------------- STORAGE ---------------------------------- */
 
-    public ArrayList<Launch> getAllLaunches(Sort sort, ArrayList<Launch> launches){
-        return wrkREST.getAllLaunches(sort, launches);
-    }
-    public ArrayList<Launch> getAllLaunches() throws Exception{
-        return wrkREST.getAllLaunches();
+    public boolean writeSortToStorage(String sort) {
+        return wrkStorage.writeSortToStorage(sort);
     }
 
-    public Map<String, Object> postUserLogin(String email, String password) throws Exception {
-        return wrkREST.postUserLogin(email, password);
+    public Sort readSortFromStorage() {
+        return wrkStorage.readSortFromStorage();
     }
 
-    public Map<String, Object> postUserRegister(String firstname, String lastname, String email, String password) throws Exception {
-        return wrkREST.postUserRegister(firstname, lastname, email, password);
+    /* ----------------------- LAUNCHES ---------------------------------- */
+    public ArrayList<Launch> getAllLaunches(Sort sort, ArrayList<Launch> launches) {
+        return wrkLaunches.getAllLaunches(sort, launches);
     }
 
-    public User getSession() throws Exception {
-        return wrkREST.getSession();
-    }
-
-    public boolean disconnect() throws Exception {
-        return wrkREST.disconnect();
-    }
-
-    public boolean isUserConnected() throws Exception {
-        return wrkREST.isUserConnected();
+    public ArrayList<Launch> getAllLaunches() throws Exception {
+        return wrkLaunches.getAllLaunches();
     }
 
     public Launch getNextLaunch() throws Exception {
-        return wrkREST.getNextLaunch();
+        return wrkLaunches.getNextLaunch();
     }
 
+
+    /* ----------------------- USER ---------------------------------- */
+    public Map<String, Object> postUserLogin(String email, String password) throws Exception {
+        return wrkDatabase.postUserLogin(email, password);
+    }
+
+    public Map<String, Object> postUserRegister(String firstname, String lastname, String email, String password) throws Exception {
+        return wrkDatabase.postUserRegister(firstname, lastname, email, password);
+    }
+
+    public User getSession() throws Exception {
+        return wrkDatabase.getSession();
+    }
+
+    public boolean disconnect() throws Exception {
+        return wrkDatabase.disconnect();
+    }
+
+    public boolean isUserConnected() throws Exception {
+        return wrkDatabase.isUserConnected();
+    }
 
     public void setRefCtrl(Ctrl refCtrl) {
         this.refCtrl = refCtrl;
     }
 
+    public void showError(String message) {
+        refCtrl.showError(message);
+    }
 }

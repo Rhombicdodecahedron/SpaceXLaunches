@@ -17,22 +17,19 @@ public class IhmRegister extends com.codename1.ui.Form {
         getToolbar().setTitle("Register");
     }
 
-
     private void onBackCommand(ActionEvent ev, Command command) {
         refIhm.goBackHome();
     }
-
 
     public void onbtm_registerActionEvent(ActionEvent ev) {
         refIhm.checkRegister(gui_txt_firstname.getText(), gui_txt_lastname.getText(), gui_txt_email.getText(), gui_txt_password.getText());
     }
 
-
     public void setRefIhm(Ihm refIhm) {
         this.refIhm = refIhm;
     }
 
-    //////-- DON'T EDIT BELOW THIS LINE!!!
+    ////////-- DON'T EDIT BELOW THIS LINE!!!
     protected com.codename1.ui.TextField gui_txt_firstname = new com.codename1.ui.TextField();
     protected com.codename1.ui.TextField gui_txt_lastname = new com.codename1.ui.TextField();
     protected com.codename1.ui.TextField gui_txt_email = new com.codename1.ui.TextField();
