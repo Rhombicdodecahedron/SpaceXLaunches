@@ -25,6 +25,12 @@ public class IhmLogged extends Form {
         getToolbar().setTitle("SpaceX Launches");
     }
 
+    private void onUserInfosCommand(ActionEvent ev, Command command) {
+        System.out.println("test");
+      Dialog.show("User Infos", "dsf", "OK", null);
+    }
+
+
     public void showAllLaunches() {
         removeAll();
         InfiniteContainer list = new InfiniteContainer() {
@@ -38,6 +44,9 @@ public class IhmLogged extends Form {
                     if (index == 0) {
                         launches = refIhm.getAllLaunches(sort, refIhm.getAllLaunches());
                     }
+
+
+
                     if (launches.size() > 0) {
                         if ((index + amount) < launches.size()) {
                             multiButtons = new MultiButton[launches.size() + 4];
@@ -128,7 +137,7 @@ public class IhmLogged extends Form {
     //////////////-- DON'T EDIT BELOW THIS LINE!!!
 
 
-// <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+// <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initGuiBuilderComponents(com.codename1.ui.util.Resources resourceObjectInstance) {
         setLayout(new com.codename1.ui.layouts.LayeredLayout());
         setInlineStylesTheme(resourceObjectInstance);
@@ -149,6 +158,12 @@ public class IhmLogged extends Form {
         };
         com.codename1.ui.FontImage.setMaterialIcon(cmd_Logout,"\ue879".charAt(0), "TitleCommand");
         cn1Toolbar.addCommandToLeftBar(cmd_Logout);
+        com.codename1.ui.Command cmd_UserInfos = new com.codename1.ui.Command("") {
+                public void actionPerformed(com.codename1.ui.events.ActionEvent ev) {
+                        onUserInfosCommand(ev, this);
+                }
+        };
+        cn1Toolbar.addCommandToOverflowMenu(cmd_UserInfos);
     }// </editor-fold>
 
 //-- DON'T EDIT ABOVE THIS LINE!!!

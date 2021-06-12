@@ -46,6 +46,8 @@ public class WrkDatabase implements Constantes {
                     .queryParam(ACTION, POST_USER_LOGIN)
                     .queryParam(EMAIL, email)
                     .queryParam(PASSWORD, password)
+                    .onError(evt -> refWrk.showError(evt.getError().getMessage()))
+                    .acceptJson()
                     .getAsBytes()
             );
         }
@@ -64,12 +66,15 @@ public class WrkDatabase implements Constantes {
         Map<String, Object> result = null;
         if (firstname != null && lastname != null && email != null && password != null) {
             result = RestUtils.responseToMap(Rest.post(REST_SERVER_URL)
+                    .onError(evt -> refWrk.showError(evt.getError().getMessage()))
                     .queryParam(ACTION, POST_USER_REGISTER)
                     .queryParam(FIRSTNAME, firstname)
                     .queryParam(LASTNAME, lastname)
                     .queryParam(EMAIL, email)
                     .queryParam(PASSWORD, password)
-                    .getAsBytes());
+                    .acceptJson()
+                    .getAsBytes()
+            );
         }
         return result;
     }
@@ -81,8 +86,9 @@ public class WrkDatabase implements Constantes {
      */
     public boolean isUserConnected() throws Exception {
         Map<String, Object> response = RestUtils.responseToMap(Rest.get(REST_SERVER_URL)
-                .queryParam(ACTION, IS_USER_CONNECTED)
                 .onError(evt -> refWrk.showError(evt.getError().getMessage()))
+                .queryParam(ACTION, IS_USER_CONNECTED)
+                .jsonContent()
                 .getAsBytes()
         );
         return Boolean.parseBoolean(response.get("isUserConnected").toString());
@@ -93,7 +99,12 @@ public class WrkDatabase implements Constantes {
      * @throws Exception
      */
     public boolean disconnect() throws Exception {
-        Map<String, Object> response = RestUtils.responseToMap(Rest.get(REST_SERVER_URL).queryParam(ACTION, GET_USER_LOGOUT).acceptJson().getAsBytes());
+        Map<String, Object> response = RestUtils.responseToMap(Rest.get(REST_SERVER_URL)
+                .onError(evt -> refWrk.showError(evt.getError().getMessage()))
+                .queryParam(ACTION, GET_USER_LOGOUT)
+                .jsonContent()
+                .getAsBytes()
+        );
         return !Boolean.parseBoolean(response.get(ERROR).toString());
     }
 
@@ -103,7 +114,12 @@ public class WrkDatabase implements Constantes {
      */
     public User getSession() throws Exception {
         User result = null;
-        Map<String, Object> response = RestUtils.responseToMap(Rest.get(REST_SERVER_URL).queryParam(ACTION, "GET_SESSION").acceptJson().getAsBytes());
+        Map<String, Object> response = RestUtils.responseToMap(Rest.get(REST_SERVER_URL)
+                .onError(evt -> refWrk.showError(evt.getError().getMessage()))
+                .queryParam(ACTION, "GET_SESSION")
+                .jsonContent()
+                .getAsBytes()
+        );
         Map<String, Object> user = (Map<String, Object>) response.get(USER);
         if (user != null) {
             int pk = Integer.parseInt(user.get("pk_user").toString());

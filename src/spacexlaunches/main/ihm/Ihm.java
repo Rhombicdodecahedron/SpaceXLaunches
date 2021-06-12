@@ -115,10 +115,6 @@ public class Ihm {
         ihmLogged.showBack();
     }
 
-    public boolean askPopUp(String message) {
-        return Dialog.show("Confirmation", message, "Yes", "No");
-    }
-
     public boolean writeSortToStorage(String sort) {
         return refCtrl.writeSortToStorage(sort);
     }
