@@ -13,6 +13,8 @@ import java.util.ArrayList;
 public class IhmLogged extends Form {
 
     private Ihm refIhm;
+    private ArrayList<Launch> launches;
+    private Launch nextLaunch;
 
     public IhmLogged() {
         this(com.codename1.ui.util.Resources.getGlobalResources());
@@ -21,76 +23,83 @@ public class IhmLogged extends Form {
 
     public IhmLogged(com.codename1.ui.util.Resources resourceObjectInstance) {
         initGuiBuilderComponents(resourceObjectInstance);
+
         getToolbar().setUIID("Transparent");
         getToolbar().setTitle("SpaceX Launches");
     }
 
     private void onUserInfosCommand(ActionEvent ev, Command command) {
         System.out.println("test");
-      Dialog.show("User Infos", "dsf", "OK", null);
+        Dialog.show("User Infos", "dsf", "OK", null);
     }
 
 
     public void showAllLaunches() {
         removeAll();
         InfiniteContainer list = new InfiniteContainer() {
-            private ArrayList<Launch> launches;
+            private final Sort sort = refIhm.readSortFromStorage();
+
+            @Override
+            public void refresh() {
+                Display.getInstance().invokeAndBlock(() -> {
+                    try {
+                        launches = refIhm.getAllLaunches(sort, refIhm.getAllLaunches());
+                        nextLaunch = refIhm.getNextLaunch();
+                        showAllLaunches();
+                    } catch (Exception e) {
+                        refIhm.showError(e.getMessage());
+                    }
+                });
+            }
 
             @Override
             public Component[] fetchComponents(int index, int amount) {
                 MultiButton[] multiButtons = null;
-                try {
-                    Sort sort = refIhm.readSortFromStorage();
-                    if (index == 0) {
-                        launches = refIhm.getAllLaunches(sort, refIhm.getAllLaunches());
-                    }
-
-
-
+                if (launches != null && nextLaunch != null) {
                     if (launches.size() > 0) {
-                        if ((index + amount) < launches.size()) {
-                            multiButtons = new MultiButton[launches.size() + 4];
-                            MultiButton b = new MultiButton("Filters");
-                            b.setTextLine2(sort.toString());
+                        multiButtons = new MultiButton[launches.size() + 4];
+                        MultiButton b = new MultiButton("Filters");
+                        b.setTextLine2(sort.toString());
 
-                            b.addActionListener(e -> {
-                                Dialog d = new Dialog();
-                                d.setLayout(BoxLayout.y());
-                                d.getContentPane().setScrollableY(true);
-                                for (Sort s : Sort.values()) {
-                                    MultiButton mb = new MultiButton(s.toString());
-                                    d.add(mb);
-                                    mb.addActionListener(ee -> {
-                                        if (refIhm.writeSortToStorage(s.toString())) {
-                                            d.dispose();
-                                            showAllLaunches();
-                                        }
-                                    });
-                                }
-                                d.showPopupDialog(b);
-                            });
-                            multiButtons[0] = b;
-                            multiButtons[1] = new MultiButton();
-                            multiButtons[1].setText("Next Launch");
-                            multiButtons[1].setEnabled(false);
-                            Launch nextLaunch = refIhm.getNextLaunch();
-                            MultiButton nextLaunchMultiButton = createLaunchCard(nextLaunch);
-                            if (nextLaunch != null) {
-                                multiButtons[2] = nextLaunchMultiButton;
+                        b.addActionListener(e -> {
+                            Dialog d = new Dialog();
+                            d.setLayout(BoxLayout.y());
+                            d.getContentPane().setScrollableY(true);
+                            for (Sort s : Sort.values()) {
+                                String sortName = s.toString();
+                                MultiButton mb = new MultiButton(sortName);
+                                d.add(mb);
+                                mb.addActionListener(ee -> {
+                                    if (refIhm.writeSortToStorage(sortName)) {
+                                        d.dispose();
+                                        launches = refIhm.getAllLaunches(Sort.valueOf(sortName), launches);
+                                        showAllLaunches();
+                                    }
+                                });
                             }
-                            multiButtons[3] = new MultiButton();
-                            multiButtons[3].setText("All Launches");
-                            multiButtons[3].setEnabled(false);
+                            d.showPopupDialog(b);
+                        });
+                        multiButtons[0] = b;
+                        multiButtons[1] = new MultiButton();
+                        multiButtons[1].setText("Next Launch");
+                        multiButtons[1].setEnabled(false);
+                        MultiButton nextLaunchMultiButton = createLaunchCard(nextLaunch);
+                        if (nextLaunch != null) {
+                            multiButtons[2] = nextLaunchMultiButton;
+                        }
+                        multiButtons[3] = new MultiButton();
+                        multiButtons[3].setText("All Launches");
+                        multiButtons[3].setEnabled(false);
 
-                            for (int iter = 0; iter < launches.size(); iter++) {
-                                Launch currentListing = launches.get(iter);
-                                int offset = iter + 4;
-                                MultiButton multiButton = createLaunchCard(currentListing);
-                                if (multiButton != null) {
-                                    multiButtons[offset] = multiButton;
-                                }
+                        for (int iter = 0; iter < launches.size(); iter++) {
+                            Launch currentListing = launches.get(iter);
+                            int offset = iter + 4;
+                            MultiButton multiButton = createLaunchCard(currentListing);
+                            if (multiButton != null) {
+                                multiButtons[offset] = multiButton;
                             }
                         }
+
                     } else {
                         removeAll();
                         multiButtons = new MultiButton[1];
@@ -98,10 +107,10 @@ public class IhmLogged extends Form {
                         multiButtons[0].setText("No Launch");
                         multiButtons[0].setEnabled(false);
                     }
-
-                } catch (Exception e) {
-                    refIhm.showError(e.getMessage());
+                } else {
+                    refresh();
                 }
+
                 return multiButtons;
             }
         };
@@ -125,6 +134,7 @@ public class IhmLogged extends Form {
         return result;
     }
 
+
     private void onLogoutCommand(ActionEvent ev, Command command) {
         refIhm.disconnect();
         refIhm.goBackHome();
@@ -134,10 +144,10 @@ public class IhmLogged extends Form {
         this.refIhm = refIhm;
     }
 
-    //////////////-- DON'T EDIT BELOW THIS LINE!!!
+    ////////////////-- DON'T EDIT BELOW THIS LINE!!!
 
 
-// <editor-fold defaultstate="collapsed" desc="Generated Code">
+// <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initGuiBuilderComponents(com.codename1.ui.util.Resources resourceObjectInstance) {
         setLayout(new com.codename1.ui.layouts.LayeredLayout());
         setInlineStylesTheme(resourceObjectInstance);

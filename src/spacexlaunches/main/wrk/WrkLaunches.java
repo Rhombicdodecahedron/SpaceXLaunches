@@ -20,15 +20,13 @@ import java.util.*;
  */
 public class WrkLaunches implements Constantes {
 
-    private ArrayList<Launch> launches;
-
     private Wrk refWrk;
 
     /**
-     * Constructeur de la classe WrkLaunches. Il défini les ArrayList launchPads et rockets.
+     * Constructeur de la classe WrkLaunches.
      */
     public WrkLaunches() {
-        launches = new ArrayList<>();
+
     }
 
     public Launch getNextLaunch() throws Exception {
@@ -94,7 +92,6 @@ public class WrkLaunches implements Constantes {
             for (Map<String, Object> response : responses) {
                 Launch launch = createLaunchObject(response);
                 if (launch != null) {
-                    launches.add(launch);
                     result.add(launch);
                 }
             }
@@ -147,9 +144,5 @@ public class WrkLaunches implements Constantes {
 
     public void setRefWrk(Wrk refWrk) {
         this.refWrk = refWrk;
-    }
-
-    public ArrayList<Launch> getLaunches() {
-        return launches;
     }
 }

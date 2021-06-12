@@ -29,7 +29,10 @@ public class IhmLaunchInfo extends com.codename1.ui.Form {
                 gui_txt_launch_name.setText(launch.getName());
                 gui_txt_img.setIcon(p);
                 if (launch.getImg() != null) {
-                    gui_txt_img.setIcon(URLImage.createToStorage(placeholder, launch.getId(), launch.getImg()));
+                    Display.getInstance().invokeAndBlock(() -> {
+                        gui_txt_img.setIcon(URLImage.createToStorage(placeholder, launch.getId(), launch.getImg()));
+
+                    });
                 }
                 gui_txt_img.setText("");
                 gui_Container.removeAll();
