@@ -23,8 +23,6 @@ public class IhmLogged extends Form {
 
     public IhmLogged(com.codename1.ui.util.Resources resourceObjectInstance) {
         initGuiBuilderComponents(resourceObjectInstance);
-
-        getToolbar().setUIID("Transparent");
         getToolbar().setTitle("SpaceX Launches");
     }
 
@@ -55,58 +53,60 @@ public class IhmLogged extends Form {
             @Override
             public Component[] fetchComponents(int index, int amount) {
                 MultiButton[] multiButtons = null;
+
                 if (launches != null && nextLaunch != null) {
-                    if (launches.size() > 0) {
-                        multiButtons = new MultiButton[launches.size() + 4];
-                        MultiButton b = new MultiButton("Filters");
-                        b.setTextLine2(sort.toString());
-
-                        b.addActionListener(e -> {
-                            Dialog d = new Dialog();
-                            d.setLayout(BoxLayout.y());
-                            d.getContentPane().setScrollableY(true);
-                            for (Sort s : Sort.values()) {
-                                String sortName = s.toString();
-                                MultiButton mb = new MultiButton(sortName);
-                                d.add(mb);
-                                mb.addActionListener(ee -> {
-                                    if (refIhm.writeSortToStorage(sortName)) {
-                                        d.dispose();
-                                        launches = refIhm.getAllLaunches(Sort.valueOf(sortName), launches);
-                                        showAllLaunches();
-                                    }
-                                });
+                    if (index < launches.size()){
+                        if (launches.size() > 0) {
+                            multiButtons = new MultiButton[launches.size() + 4];
+                            MultiButton b = new MultiButton("Filters");
+                            b.setTextLine2(sort.toString());
+                            b.addActionListener(e -> {
+                                Dialog d = new Dialog();
+                                d.setLayout(BoxLayout.y());
+                                d.getContentPane().setScrollableY(true);
+                                for (Sort s : Sort.values()) {
+                                    String sortName = s.toString();
+                                    MultiButton mb = new MultiButton(sortName);
+                                    d.add(mb);
+                                    mb.addActionListener(ee -> {
+                                        if (refIhm.writeSortToStorage(sortName)) {
+                                            d.dispose();
+                                            launches = refIhm.getAllLaunches(Sort.valueOf(sortName), launches);
+                                            showAllLaunches();
+                                        }
+                                    });
+                                }
+                                d.showPopupDialog(b);
+                            });
+                            multiButtons[0] = b;
+                            multiButtons[1] = new MultiButton();
+                            multiButtons[1].setText("Next Launch");
+                            multiButtons[1].setEnabled(false);
+                            MultiButton nextLaunchMultiButton = createLaunchCard(nextLaunch);
+                            if (nextLaunch != null) {
+                                multiButtons[2] = nextLaunchMultiButton;
                             }
-                            d.showPopupDialog(b);
-                        });
-                        multiButtons[0] = b;
-                        multiButtons[1] = new MultiButton();
-                        multiButtons[1].setText("Next Launch");
-                        multiButtons[1].setEnabled(false);
-                        MultiButton nextLaunchMultiButton = createLaunchCard(nextLaunch);
-                        if (nextLaunch != null) {
-                            multiButtons[2] = nextLaunchMultiButton;
-                        }
-                        multiButtons[3] = new MultiButton();
-                        multiButtons[3].setText("All Launches");
-                        multiButtons[3].setEnabled(false);
-
-                        for (int iter = 0; iter < launches.size(); iter++) {
-                            Launch currentListing = launches.get(iter);
-                            int offset = iter + 4;
-                            MultiButton multiButton = createLaunchCard(currentListing);
-                            if (multiButton != null) {
-                                multiButtons[offset] = multiButton;
+                            multiButtons[3] = new MultiButton();
+                            multiButtons[3].setText("All Launches");
+                            multiButtons[3].setEnabled(false);
+                            for (int iter = 0; iter < launches.size(); iter++) {
+                                Launch currentListing = launches.get(iter);
+                                int offset = iter + 4;
+                                MultiButton multiButton = createLaunchCard(currentListing);
+                                if (multiButton != null) {
+                                    multiButtons[offset] = multiButton;
+                                }
                             }
-                        }
 
-                    } else {
-                        removeAll();
-                        multiButtons = new MultiButton[1];
-                        multiButtons[0] = new MultiButton();
-                        multiButtons[0].setText("No Launch");
-                        multiButtons[0].setEnabled(false);
+                        } else {
+                            removeAll();
+                            multiButtons = new MultiButton[1];
+                            multiButtons[0] = new MultiButton();
+                            multiButtons[0].setText("No Launch");
+                            multiButtons[0].setEnabled(false);
+                        }
                     }
+
                 } else {
                     refresh();
                 }
@@ -144,7 +144,7 @@ public class IhmLogged extends Form {
         this.refIhm = refIhm;
     }
 
-    ////////////////-- DON'T EDIT BELOW THIS LINE!!!
+    ////////////////////-- DON'T EDIT BELOW THIS LINE!!!
 
 
 // <editor-fold defaultstate="collapsed" desc="Generated Code">                          

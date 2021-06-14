@@ -79,7 +79,7 @@ public class IhmLaunchInfo extends com.codename1.ui.Form {
         this.refIhm = refIhm;
     }
 
-    //////////-- DON'T EDIT BELOW THIS LINE!!!
+    ////////////-- DON'T EDIT BELOW THIS LINE!!!
     protected com.codename1.ui.Label gui_txt_launch_name = new com.codename1.ui.Label();
     protected com.codename1.ui.Label gui_txt_img = new com.codename1.ui.Label();
     protected com.codename1.ui.Container gui_Container = new com.codename1.ui.Container(new com.codename1.ui.layouts.LayeredLayout());

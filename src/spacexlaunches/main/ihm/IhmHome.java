@@ -101,12 +101,12 @@ public class IhmHome extends com.codename1.ui.Form {
                 gui_Label.setInlineStylesTheme(resourceObjectInstance);
         gui_Label.setInlineAllStyles("font:10.0mm; fgColor:fbf9f9; bgImage:null;");
         gui_Label.setName("Label");
-        gui_btn_load_login.setPreferredSizeStr("20.899471mm inherit");
+        gui_btn_load_login.setPreferredSizeStr("28.276329mm inherit");
         gui_btn_load_login.setText("Log In");
                 gui_btn_load_login.setInlineStylesTheme(resourceObjectInstance);
         gui_btn_load_login.setInlineAllStyles("font:6.0mm; fgColor:eb8f0e;");
         gui_btn_load_login.setName("btn_load_login");
-        gui_btn_load_register.setPreferredSizeStr("28.042328mm inherit");
+        gui_btn_load_register.setPreferredSizeStr("31.324076mm inherit");
         gui_btn_load_register.setText("Register");
                 gui_btn_load_register.setInlineStylesTheme(resourceObjectInstance);
         gui_btn_load_register.setInlineAllStyles("font:6.0mm; fgColor:eb8f0e;");
@@ -120,8 +120,8 @@ public class IhmHome extends com.codename1.ui.Form {
         gui_Container.addComponent(gui_btn_load_register);
         gui_Container.addComponent(gui_Label_1);
         ((com.codename1.ui.layouts.LayeredLayout)gui_Label.getParent().getLayout()).setInsets(gui_Label, "35.603344% auto auto auto").setReferenceComponents(gui_Label, "-1 -1 -1 -1").setReferencePositions(gui_Label, "0.0 0.0 0.0 0.0");
-        ((com.codename1.ui.layouts.LayeredLayout)gui_btn_load_login.getParent().getLayout()).setInsets(gui_btn_load_login, "19.709543% auto auto 12.060302%").setReferenceComponents(gui_btn_load_login, "0 -1 -1 -1").setReferencePositions(gui_btn_load_login, "1.0 0.0 0.0 0.0");
-        ((com.codename1.ui.layouts.LayeredLayout)gui_btn_load_register.getParent().getLayout()).setInsets(gui_btn_load_register, "19.709543% 8.040201% auto auto").setReferenceComponents(gui_btn_load_register, "0 -1 -1 -1").setReferencePositions(gui_btn_load_register, "1.0 0.0 0.0 0.0");
+        ((com.codename1.ui.layouts.LayeredLayout)gui_btn_load_login.getParent().getLayout()).setInsets(gui_btn_load_login, "19.709543% auto auto 2.0mm").setReferenceComponents(gui_btn_load_login, "0 -1 -1 -1").setReferencePositions(gui_btn_load_login, "1.0 0.0 0.0 0.0");
+        ((com.codename1.ui.layouts.LayeredLayout)gui_btn_load_register.getParent().getLayout()).setInsets(gui_btn_load_register, "19.709543% 2.0mm auto 32.00135mm").setReferenceComponents(gui_btn_load_register, "0 -1 -1 -1").setReferencePositions(gui_btn_load_register, "1.0 0.0 0.0 0.0");
         ((com.codename1.ui.layouts.LayeredLayout)gui_Label_1.getParent().getLayout()).setInsets(gui_Label_1, "44.70588% 5.3596616% 9.558824% 22.849083%").setReferenceComponents(gui_Label_1, "-1 -1 0 -1").setReferencePositions(gui_Label_1, "0.0 0.0 0.0 0.0");
         ((com.codename1.ui.layouts.LayeredLayout)gui_Container.getLayout()).setPreferredWidthMM((float)132.27513);
         ((com.codename1.ui.layouts.LayeredLayout)gui_Container.getLayout()).setPreferredHeightMM((float)221.42857);
