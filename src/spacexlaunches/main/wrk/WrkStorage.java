@@ -13,12 +13,6 @@ import spacexlaunches.main.enumeration.Sort;
  */
 public class WrkStorage implements Constantes {
 
-    /**
-     * Cette méthode permet de stocker une variable de tri pour que, lors du redémarrage, l'utilisateur ait toujours la même méthode de trie.
-     *
-     * @param sort représente le paramètre de trie à stocker.
-     * @return true si l'enregistrement a correctement été effectué ou false.
-     */
     public boolean writeSortToStorage(String sort) {
         boolean result = false;
         if (sort != null) {

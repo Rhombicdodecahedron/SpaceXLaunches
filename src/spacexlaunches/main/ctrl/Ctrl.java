@@ -1,8 +1,11 @@
 package spacexlaunches.main.ctrl;
 
+import com.codename1.ui.Form;
+import spacexlaunches.main.Constantes;
 import spacexlaunches.main.beans.Launch;
 import spacexlaunches.main.enumeration.ListIhm;
 import spacexlaunches.main.enumeration.Sort;
+import spacexlaunches.main.exception.RestException;
 import spacexlaunches.main.ihm.Ihm;
 import spacexlaunches.main.wrk.Wrk;
 import com.codename1.io.Log;
@@ -20,21 +23,8 @@ public class Ctrl {
 
 
     public void start() {
-        // use two network threads instead of one
         updateNetworkThreadCount(2);
-
-        // Pro only feature
         Log.bindCrashProtection(true);
-
-        addNetworkErrorListener(err -> {
-            // prevent the event from propagating
-            err.consume();
-            if (err.getError() != null) {
-                Log.e(err.getError());
-            }
-            Log.sendLogAsync();
-            refIhm.showError("There was a networking error in the connection to " + err.getConnectionRequest().getUrl());
-        });
         showCurrentView();
     }
 
@@ -42,18 +32,18 @@ public class Ctrl {
         if (email != null && !email.isEmpty() && password != null && !password.isEmpty()) {
             try {
                 Map<String, Object> response = refWrk.postUserLogin(email, password);
-                boolean isError = Boolean.parseBoolean(response.get("error").toString());
+                boolean isError = Boolean.parseBoolean(response.get(Constantes.ERROR).toString());
                 String message = response.get("message").toString();
                 if (!isError) {
                     refIhm.afficheLogged();
                 } else {
-                    refIhm.showError(message);
+                    showError(message);
                 }
             } catch (Exception e) {
-                refIhm.showError(e.getMessage());
+                showError(e.getMessage());
             }
         } else {
-            refIhm.showError("You haven't completed all the fields of this form !");
+            showError("You haven't completed all the fields of this form !");
         }
     }
 
@@ -61,24 +51,25 @@ public class Ctrl {
         if (email != null && !email.isEmpty() && firstname != null && !firstname.isEmpty() && lastname != null && !lastname.isEmpty() && password != null && !password.isEmpty()) {
             try {
                 Map<String, Object> response = refWrk.postUserRegister(firstname, lastname, email, password);
-                boolean isError = Boolean.parseBoolean(response.get("error").toString());
+                boolean isError = Boolean.parseBoolean(response.get(Constantes.ERROR).toString());
                 String message = response.get("message").toString();
                 if (!isError) {
-                    refIhm.afficheLogged();
+                    refIhm.afficheLogin();
                 } else {
-                    refIhm.showError(message);
+                    showError(message);
                 }
             } catch (Exception e) {
-                refIhm.showError(e.getMessage());
+                showError(e.getMessage());
             }
         } else {
-            refIhm.showError("You need to complete all fields of the form !");
+            showError("You need to complete all fields of the form !");
         }
     }
 
     public ArrayList<Launch> getAllLaunches(Sort sort, ArrayList<Launch> launches) {
         return refWrk.getAllLaunches(sort, launches);
     }
+
     public Launch getNextLaunches() throws Exception {
         return refWrk.getNextLaunch();
     }
@@ -86,10 +77,10 @@ public class Ctrl {
     public void disconnect() {
         try {
             if (refWrk.disconnect()) {
-                refIhm.infoPopUp("Info", "Vous avez correctement été déconecté !", "OK", null);
+                refIhm.infoPopUp("Info", "You're disconnected !", "OK", null);
             }
         } catch (Exception e) {
-            refIhm.showError(e.getMessage());
+            showError(e.getMessage());
         }
     }
 
@@ -101,52 +92,45 @@ public class Ctrl {
     public void showCurrentView() {
         try {
             boolean isUserConnected = refWrk.isUserConnected();
-            try {
-                switch (ListIhm.valueOf(getCurrentForm().getName())) {
-                    case IhmHome:
-                        if (!isUserConnected) {
-                            refIhm.afficheHome();
-                        } else {
-                            refIhm.afficheLogged();
+            Form current = getCurrentForm();
+
+            if (current != null && current.getName() != null) {
+                String currentFormName = current.getName();
+                if (currentFormName != null) {
+                    if (isUserConnected) {
+                        switch (ListIhm.valueOf(currentFormName)) {
+                            case IhmHome:
+                            case IhmLogin:
+                            case IhmRegister:
+                                refIhm.afficheLogged();
+                                break;
                         }
-                        break;
-                    case IhmLogin:
-                        if (!isUserConnected) {
-                            refIhm.afficheLogin();
-                        } else {
-                            refIhm.afficheLogged();
+                    } else {
+                        switch (ListIhm.valueOf(currentFormName)) {
+                            case IhmLogged:
+                            case IhmLaunchInfo:
+                                refIhm.afficheHome();
+                                break;
                         }
-                        break;
-                    case IhmRegister:
-                        if (!isUserConnected) {
-                            refIhm.afficheRegister();
-                        } else {
-                            refIhm.afficheLogged();
-                        }
-                        break;
-                    case IhmLogged:
-                        if (isUserConnected) {
-                            refIhm.afficheLogged();
-                        } else {
-                            refIhm.afficheHome();
-                        }
-                        break;
-                    case IhmLaunchInfo:
-                        //TODO
-                        break;
+                    }
                 }
-            } catch (NullPointerException e) {
+
+
+            } else {
                 if (isUserConnected) {
                     refIhm.afficheLogged();
                 } else {
                     refIhm.afficheHome();
-                    refIhm.showToastbarInfo("You are not connected !");
                 }
             }
+        } catch (RestException e) {
+            showError(e.getMessage());
+            refIhm.afficheHome();
+        } catch (NullPointerException ignored) {
+            ignored.printStackTrace();
         } catch (Exception e) {
-            refIhm.showError(e.getMessage());
+            showError(e.getMessage());
         }
-
     }
 
     public boolean writeSortToStorage(String sort) {

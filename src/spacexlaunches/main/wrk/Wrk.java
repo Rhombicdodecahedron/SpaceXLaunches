@@ -1,9 +1,9 @@
 package spacexlaunches.main.wrk;
 
 import spacexlaunches.main.beans.Launch;
-import spacexlaunches.main.beans.User;
 import spacexlaunches.main.ctrl.Ctrl;
 import spacexlaunches.main.enumeration.Sort;
+import spacexlaunches.main.exception.RestException;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -41,8 +41,8 @@ public class Wrk {
     public Wrk() {
         wrkStorage = new WrkStorage();
         wrkLaunches = new WrkLaunches();
-        wrkLaunches.setRefWrk(this);
         wrkDatabase = new WrkDatabase();
+        wrkLaunches.setRefWrk(this);
         wrkDatabase.setRefWrk(this);
     }
 
@@ -57,6 +57,7 @@ public class Wrk {
     }
 
     /* ----------------------- LAUNCHES ---------------------------------- */
+
     public ArrayList<Launch> getAllLaunches(Sort sort, ArrayList<Launch> launches) {
         return wrkLaunches.getAllLaunches(sort, launches);
     }
@@ -69,27 +70,25 @@ public class Wrk {
         return wrkLaunches.getNextLaunch();
     }
 
-
     /* ----------------------- USER ---------------------------------- */
-    public Map<String, Object> postUserLogin(String email, String password) throws Exception {
+
+    public Map<String, Object> postUserLogin(String email, String password) throws RestException {
         return wrkDatabase.postUserLogin(email, password);
     }
 
-    public Map<String, Object> postUserRegister(String firstname, String lastname, String email, String password) throws Exception {
+    public Map<String, Object> postUserRegister(String firstname, String lastname, String email, String password) throws RestException {
         return wrkDatabase.postUserRegister(firstname, lastname, email, password);
     }
 
-    public User getSession() throws Exception {
-        return wrkDatabase.getSession();
-    }
-
-    public boolean disconnect() throws Exception {
+    public boolean disconnect() throws RestException {
         return wrkDatabase.disconnect();
     }
 
-    public boolean isUserConnected() throws Exception {
+    public boolean isUserConnected() throws RestException {
         return wrkDatabase.isUserConnected();
     }
+
+    //SETTER AND GETTER
 
     public void setRefCtrl(Ctrl refCtrl) {
         this.refCtrl = refCtrl;

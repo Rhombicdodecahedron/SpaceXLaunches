@@ -19,15 +19,4 @@ public class RestUtils {
             }
         return result;
     }
-
-    public static Map<String, Object> responseToMap(byte[] response) throws Exception {
-        Map<String, Object> result = new HashMap<>();
-        if (response != null) {
-            JSONParser p = new JSONParser();
-            InputStreamReader r = new InputStreamReader(new ByteArrayInputStream(response));
-            result.putAll(p.parseJSON(r));
-        }
-        return result;
-    }
-
 }

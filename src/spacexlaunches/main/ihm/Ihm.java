@@ -1,6 +1,5 @@
 package spacexlaunches.main.ihm;
 
-import com.codename1.components.ToastBar;
 import com.codename1.ui.*;
 import spacexlaunches.main.beans.Launch;
 import spacexlaunches.main.ctrl.Ctrl;
@@ -21,24 +20,19 @@ public class Ihm {
 
     public Ihm() {
         Resources theme = UIManager.initFirstTheme("/theme");
+        Toolbar.setGlobalToolbar(false);
 
         ihmRegister = new IhmRegister(theme);
-        ihmRegister.setRefIhm(this);
-
         ihmHome = new IhmHome(theme);
-        ihmHome.setRefIhm(this);
-
-        ihmLogin = new IhmLogin(theme);
-        ihmLogin.setRefIhm(this);
-
         ihmLogged = new IhmLogged(theme);
-        ihmLogged.setRefIhm(this);
-
+        ihmLogin = new IhmLogin(theme);
         ihmLaunchInfo = new IhmLaunchInfo(theme);
-        ihmLaunchInfo.setRefIhm(this);
 
-        // Enable Toolbar on all Forms by default
-        Toolbar.setGlobalToolbar(false);
+        ihmRegister.setRefIhm(this);
+        ihmLogin.setRefIhm(this);
+        ihmHome.setRefIhm(this);
+        ihmLogged.setRefIhm(this);
+        ihmLaunchInfo.setRefIhm(this);
     }
 
     public void afficheLogin() {
@@ -92,14 +86,6 @@ public class Ihm {
 
     public void disconnect() {
         refCtrl.disconnect();
-    }
-
-    public void showToastbarInfo(String message) {
-        ToastBar.Status status = ToastBar.getInstance().createStatus();
-        status.setMessage(message);
-        // status.setIcon(Image.createImage(FontImage.MATERIAL_INFO));
-        status.setExpires(5000);  // only show the status for 3 seconds, then have it automatically clear
-        status.show();
     }
 
     public void showError(String message) {

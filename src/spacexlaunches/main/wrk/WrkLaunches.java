@@ -26,7 +26,6 @@ public class WrkLaunches implements Constantes {
      * Constructeur de la classe WrkLaunches.
      */
     public WrkLaunches() {
-
     }
 
     public Launch getNextLaunch() throws Exception {
@@ -99,11 +98,6 @@ public class WrkLaunches implements Constantes {
         return result;
     }
 
-    /**
-     * @param response
-     * @return
-     * @throws Exception
-     */
     private Launch createLaunchObject(Map<String, Object> response) throws Exception {
         Launch result = null;
         if (response != null) {

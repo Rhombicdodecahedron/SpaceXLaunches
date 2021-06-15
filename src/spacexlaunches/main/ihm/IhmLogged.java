@@ -26,12 +26,6 @@ public class IhmLogged extends Form {
         getToolbar().setTitle("SpaceX Launches");
     }
 
-    private void onUserInfosCommand(ActionEvent ev, Command command) {
-        System.out.println("test");
-        Dialog.show("User Infos", "dsf", "OK", null);
-    }
-
-
     public void showAllLaunches() {
         removeAll();
         InfiniteContainer list = new InfiniteContainer() {
@@ -124,7 +118,7 @@ public class IhmLogged extends Form {
         if (launch != null) {
             result = new MultiButton(launch.getName());
             result.addActionListener(evt -> refIhm.showLaunchInfo(launch));
-            result.setTextLine2(DateUtils.formatDate(launch.getLaunchDate()));
+            result.setTextLine2(DateUtils.formatDate(launch.getLaunchDate()) + " UTC");
             String details = launch.getDetails();
             if (details != null && details.length() > 35) {
                 details = details.substring(0, 35) + "...";
@@ -168,12 +162,6 @@ public class IhmLogged extends Form {
         };
         com.codename1.ui.FontImage.setMaterialIcon(cmd_Logout,"\ue879".charAt(0), "TitleCommand");
         cn1Toolbar.addCommandToLeftBar(cmd_Logout);
-        com.codename1.ui.Command cmd_UserInfos = new com.codename1.ui.Command("") {
-                public void actionPerformed(com.codename1.ui.events.ActionEvent ev) {
-                        onUserInfosCommand(ev, this);
-                }
-        };
-        cn1Toolbar.addCommandToOverflowMenu(cmd_UserInfos);
     }// </editor-fold>
 
 //-- DON'T EDIT ABOVE THIS LINE!!!
